@@ -9,19 +9,27 @@
 //               {term, en, ms} entries (glossary style). The script is run in a
 //               node:vm sandbox with no access to the host, so it can be any
 //               hand-written JS; functions and side effects are ignored.
-//   .js (inline) calls of the form L("english", "malay") anywhere in the source.
-//               The call names are configurable (default L; e.g. "L,LL").
+//   .js (inline) calls of the form L("english", "malay") anywhere in the source, including strings
+//               built by concatenation (L("Score " + c, "Skor " + c) -> "Score {e1}" / "Skor {e1}").
+//               The call names are configurable (default L; e.g. "L,LL"); "tx:1" skips one leading
+//               argument, for helpers such as tx(element, en, ms).
 //   .js (ms-only) a table that holds Malay text only (e.g. translations of engine output whose
 //               English lives elsewhere). Its string leaves become rows with en = null, so the
 //               rules that need only the Malay side (grammar, pronouns, rejected forms, patterns)
 //               still run on it.
+//   .html       pages that carry both languages as sibling elements with class "en" and "ms"
+//               (see html.js), plus data-…-en / data-…-ms attribute pairs.
 // Objects are searched at any depth: an object with en/ms sub-objects is paired key by key, an
 // object with en/ms strings is one row. If a script throws while loading, whatever it defined
-// before the error is still harvested, and literal pairs  en: '…', ms: '…'  are read by regex.
+// before the error is still harvested, and properties  en: …, ms: …  are read from the source.
+// Option pairArrays: two-element arrays of string literals are read as [en, ms] when one
+// element contains a space (data such as {q: ["it doubles", "ia berganda"]}).
 
 import { readFile } from 'node:fs/promises';
 import { basename, extname, relative } from 'node:path';
 import vm from 'node:vm';
+import { extractHtml } from './html.js';
+import { codeMask, extractCalls, extractObjectPairs, extractPairArrays } from './jsparse.js';
 
 const isObj = v => v !== null && typeof v === 'object' && !Array.isArray(v);
 
@@ -95,18 +103,10 @@ function harvestLeaves(file, values, maxDepth = 6) {
   return rows;
 }
 
-/** Literal pairs  en: '…', ms: '…'  (same object, en first), for scripts that cannot be evaluated. */
-export function extractPairs(file, src) {
-  const q = `(?:"((?:[^"\\\\]|\\\\.)*)"|'((?:[^'\\\\]|\\\\.)*)'|\`((?:[^\`\\\\]|\\\\.)*)\`)`;
-  const re = new RegExp(`\\ben\\s*:\\s*${q}\\s*,\\s*ms\\s*:\\s*${q}`, 'g');
-  const unesc = s => s.replace(/\\(["'`\\nt])/g, (_, c) => ({ n: '\n', t: '\t' }[c] ?? c));
-  const rows = [];
-  let m;
-  while ((m = re.exec(src))) {
-    const line = src.slice(0, m.index).split('\n').length;
-    rows.push({ file, key: `pair@${line}`, en: unesc(m[1] ?? m[2] ?? m[3] ?? ''), ms: unesc(m[4] ?? m[5] ?? m[6] ?? '') });
-  }
-  return rows;
+/** Properties  en: …, ms: …  (same object, en first) read from the source, for scripts that cannot be
+ *  evaluated. Strings built by concatenation are read with {eN} placeholders. */
+export function extractPairs(file, src, langs = ['en', 'ms']) {
+  return extractObjectPairs(file, src, langs);
 }
 
 /** Run a script in a sandbox; return [name, value] pairs for its top-level bindings, exports and
@@ -145,26 +145,22 @@ function evalScript(src) {
   return { values, error };
 }
 
-/** Extract inline L("en", "ms") calls. Handles '…', "…" and `…` without nested quotes of the same kind. */
+/** Inline helper calls L("en", "ms"); see jsparse.js. callName "L,LL,tx:1". */
 export function extractInline(file, src, callName = 'L') {
-  const names = String(callName).split(',').map(n => n.trim()).filter(Boolean).map(n => n.replace(/[^\w$]/g, ''));
-  const q = `(?:"((?:[^"\\\\]|\\\\.)*)"|'((?:[^'\\\\]|\\\\.)*)'|\`((?:[^\`\\\\]|\\\\.)*)\`)`;
-  const re = new RegExp(`(?<![\\w$.])(${names.join('|')})\\(\\s*${q}\\s*,\\s*${q}\\s*\\)`, 'g');
-  const unesc = s => s.replace(/\\(["'`\\nt])/g, (_, c) => ({ n: '\n', t: '\t' }[c] ?? c));
-  const rows = [];
-  let m, i = 0;
-  while ((m = re.exec(src))) {
-    const en = unesc(m[2] ?? m[3] ?? m[4] ?? '');
-    const ms = unesc(m[5] ?? m[6] ?? m[7] ?? '');
-    const line = src.slice(0, m.index).split('\n').length;
-    rows.push({ file, key: `${m[1]}@${line}#${++i}`, en, ms });
-  }
-  return rows;
+  return extractCalls(file, src, callName);
+}
+
+function callNote(file, rows) {
+  const st = rows.stats;
+  if (!st || !st.skipped.length) return '';
+  const lines = st.skipped.slice(0, 20).join(', ') + (st.skipped.length > 20 ? ', …' : '');
+  return `${file}: ${st.calls} helper call(s): ${st.read} read, ${st.passThrough} with variables only, ${st.skipped.length} not read (one side has no literal text, or not an (en, ms) pair; line ${lines})`;
 }
 
 export function detect(path, src) {
   const ext = extname(path).toLowerCase();
   if (ext === '.json') return 'json';
+  if (ext === '.html' || ext === '.htm') return 'html';
   if (ext === '.js' || ext === '.mjs' || ext === '.cjs' || ext === '.ts') {
     // A table file declares an object with en: { and ms: { blocks; otherwise treat as inline.
     if (/\ben\s*:\s*\{/.test(src) && /\bms\s*:\s*\{/.test(src)) return 'js-table';
@@ -176,7 +172,7 @@ export function detect(path, src) {
 }
 
 /**
- * Load one file. opts: { langs: ['en','ms'], callName: 'L', kind: force a loader }
+ * Load one file. opts: { langs: ['en','ms'], callName: 'L', kind: force a loader, pairArrays: false }
  */
 export async function loadFile(path, opts = {}) {
   const langs = opts.langs || ['en', 'ms'];
@@ -192,20 +188,27 @@ export async function loadFile(path, opts = {}) {
       .filter(([, v]) => isObj(v))
       .map(([key, v]) => ({ file, key, en: v[langs[0]] ?? null, ms: v[langs[1]] ?? null }));
   }
+  if (kind === 'html') return extractHtml(file, src, langs);
   const call = opts.callName || 'L';
+  const mask = codeMask(src);
+  const extras = () => (opts.pairArrays ? extractPairArrays(file, src, mask) : []);
   if (kind === 'js-table') {
     const { values, error } = evalScript(src);
     let rows = harvest(file, values, langs);
-    if (!rows.length) rows = extractPairs(file, src);                 // could not evaluate: read literal pairs
-    if (error) rows.warning = `${file}: evaluation stopped early (${error}); ${rows.length} pairs read`;
-    // A table file may also carry inline calls; collect them too.
-    const all = rows.concat(extractInline(file, src, call));
-    all.warning = rows.warning;
+    if (!rows.length) rows = extractObjectPairs(file, src, langs, mask);   // could not evaluate: read the pairs from the source
+    const calls = extractCalls(file, src, call, mask);
+    const all = rows.concat(calls, extras());
+    const notes = [error ? `${file}: evaluation stopped early (${error}); ${rows.length} pairs read` : '', callNote(file, calls)].filter(Boolean);
+    if (notes.length) all.warning = notes.join('\n');
     return all;
   }
   if (kind === 'js-inline') {
-    const rows = extractInline(file, src, call);
-    return rows.length ? rows : loadMsOnly(file, src);
+    const calls = extractCalls(file, src, call, mask);
+    const rows = calls.concat(extras());
+    if (!rows.length) return loadMsOnly(file, src);
+    const note = callNote(file, calls);
+    if (note) rows.warning = note;
+    return rows;
   }
   if (kind === 'js-ms-only') return loadMsOnly(file, src);
   throw new Error(`unknown loader kind: ${kind}`);
@@ -224,7 +227,7 @@ export async function loadFiles(paths, opts = {}) {
   for (const p of paths) {
     const label = opts.relativeTo ? relative(opts.relativeTo, p) : undefined;
     const rows = await loadFile(p, { ...opts, label });
-    if (rows.warning) warnings.push(rows.warning);
+    if (rows.warning) warnings.push(...rows.warning.split('\n'));
     if (!rows.length) warnings.push(`${basename(p)}: no strings found`);
     all.push(...rows);
   }

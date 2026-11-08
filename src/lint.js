@@ -12,7 +12,7 @@ const LEVEL_ORDER = { FIX: 0, WATCH: 1, INFO: 2 };
  * options: { termbase, patterns, langs, callName, rules: ['R01', ...], ignore: ['R03'], ...rule options }
  */
 export async function lint(paths, options = {}) {
-  const rows = await loadFiles(paths, { langs: options.langs, callName: options.callName, relativeTo: options.relativeTo });
+  const rows = await loadFiles(paths, { langs: options.langs, callName: options.callName, relativeTo: options.relativeTo, pairArrays: options.pairArrays });
   const terms = options.termbase ? await loadTermbase(options.termbase) : [];
   const patterns = options.patterns ? await loadPatterns(options.patterns) : [];
   const accepted = options.accept ? await loadAccepted(options.accept) : [];

@@ -16,7 +16,9 @@
 //   --rules R01,R09    run only these rules
 //   --ignore R11       skip these rules
 //   --with R03         also run opt-in rules (R03, the length rule, is off by default)
-//   --call L,LL        names of the inline bilingual helpers to extract (default L)
+//   --call L,LL        names of the inline bilingual helpers to extract (default L); name:k skips k
+//                      leading arguments, e.g. tx:1 for tx(element, en, ms)
+//   --pair-arrays      also read two-string arrays ["en text", "teks ms"] as pairs (one element must have a space)
 //   --langs en,ms      language keys in the tables (default en,ms)
 //   --casual           allow casual pronouns (persona voice)
 //   --no-fail          exit 0 even when FIX findings exist
@@ -35,6 +37,7 @@ function parseArgs(argv) {
     if (a === '--no-fail') opts.noFail = true;
     else if (a === '--casual') opts.allowCasualPronouns = true;
     else if (a === '--quiet') opts.quiet = true;
+    else if (a === '--pair-arrays') opts.pairArrays = true;
     else if (a.startsWith('--')) { opts[a.slice(2)] = argv[++i]; }
     else opts._.push(a);
   }
@@ -42,7 +45,7 @@ function parseArgs(argv) {
 }
 
 function usage(code = 0) {
-  console.log('usage: bml lint [--termbase t.csv] [--patterns p.csv] [--accept a.csv] [--format md|json] [--out f] [--rules R..] [--with R03] [--ignore R..] [--call L,LL] [--casual] [--no-fail] <files...>\n       bml terms <termbase.csv>\n       bml dbp <termbase.csv>');
+  console.log('usage: bml lint [--termbase t.csv] [--patterns p.csv] [--accept a.csv] [--format md|json] [--out f] [--rules R..] [--with R03] [--ignore R..] [--call L,LL,tx:1] [--pair-arrays] [--casual] [--no-fail] <files...>\n       bml terms <termbase.csv>\n       bml dbp <termbase.csv>');
   process.exit(code);
 }
 
@@ -60,6 +63,7 @@ async function main() {
       termbase, patterns, accept,
       langs: o.langs ? o.langs.split(',') : undefined,
       callName: o.call,
+      pairArrays: !!o.pairArrays,
       rules: o.rules ? o.rules.split(',') : [],
       ignore: o.ignore ? o.ignore.split(',') : [],
       with: o.with ? o.with.split(',') : [],

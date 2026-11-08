@@ -245,3 +245,53 @@ test('R13: a flagged term (PRPM does not support it) is a WATCH with its note', 
   assert.deepEqual(f.map(x => `${x.key}:${x.level}`), ['graduate:WATCH', 'n/a:INFO']);
   assert.match(f[0].msg, /not in Kamus Dewan/);
 });
+
+/* ---------- v0.1.3 loader: HTML pairs, built strings, pair arrays ---------- */
+test('HTML loader pairs en/ms siblings, keeps markup, reports unpaired elements', async () => {
+  const rows = await loadFile(fx('page.html'));
+  const by = s => rows.find(r => (r.en || '').startsWith(s) || (r.en == null && (r.ms || '').startsWith(s)));
+  assert.equal(by('Notes').ms, 'Nota');
+  assert.equal(by('Notes').key.startsWith('t-notes/span@'), true);
+  assert.equal(by('1 Why').ms, '1 Mengapa influence line?');
+  const lead = by('The load');
+  assert.equal(lead.en, 'The load moves along the <b>beam</b>; \\(\\eta_A(x)\\) changes.');
+  assert.equal(lead.ms, 'Load bergerak di sepanjang <b>beam</b>; \\(\\eta_A(x)\\) berubah.');
+  assert.equal(by('An English paragraph').ms, '');                      // en without ms: R02 will report it
+  assert.equal(by('Ayat Melayu').en, null);                             // ms without en: Malay-only row
+  assert.equal(by('Outer').ms, 'Luar <span class="ms">dalam</span> teks'); // nested en/ms belong to the outer string
+  assert.equal(by('Search').ms, 'Cari, contoh kgf');                    // data-ph-en / data-ph-ms
+  assert.equal(by('Tom').en, 'Tom & Jerry &lt;3');                 // entities decoded, except &lt; &gt;
+  assert.equal(rows.some(r => /commented|in a script|not a string/.test(r.en || '')), false);
+  assert.equal(rows.length, 8);
+  assert.match(rows.warning, /1 "en" element\(s\) without a "ms" partner/);
+  assert.match(rows.warning, /1 "ms" element\(s\) without a "en" partner/);
+  assert.match(rows.warning, /2 en\/ms element\(s\) inside another/);
+});
+
+test('JS loader reads built strings, skipped arguments, indexed literals and pair arrays', async () => {
+  const rows = await loadFile(fx('built-strings.js'), { callName: 'L2,tx:1', pairArrays: true });
+  const by = s => rows.find(r => (r.en || '').startsWith(s));
+  assert.equal(by('Correct.').ms, 'Betul.');
+  assert.deepEqual([by('Score').en, by('Score').ms], ['Score {e1} / {e2} answered', 'Skor {e1} / {e2} dijawab']);
+  assert.equal(by(' · time ').ms, ' · masa ');                           // a call nested in another expression
+  assert.deepEqual([by('{e1} of 8').en, by('{e1} of 8').ms], ['{e1} of 8 sections read', 'Bahagian dibaca: {e1} daripada 8']);
+  assert.equal(by('The PDF').ms, 'PDF tidak dapat disimpan di sini.');
+  assert.equal(by('Theme: dark').ms, 'Tema: gelap');
+  assert.equal(by('(b) load on CD').ms, '(b) load pada CD');
+  assert.equal(by('Done').ms, 'Selesai');                                 // inside a template literal
+  assert.equal(by('The mass').ms, 'Jisim berada di halt 5. Yang mana benar?');
+  assert.equal(by('it doubles').ms, 'ia berganda');
+  assert.equal(rows.some(r => r.en === 'R_A' || r.en === 'R_C'), false);  // symbol pairs are not language pairs
+  assert.deepEqual([by('Lab ·').en, by('Lab ·').ms], ['Lab · checklist ({e1} of 7 items)', 'Makmal · senarai semak ({e1} daripada 7 item)']);
+  const sum = by('Sum =');
+  assert.equal(sum.en, "Sum = <b class='num'>{e1} kgf</b> against {e2} kgf ({e3})");
+  assert.equal(sum.ms, "Jumlah = <b class='num'>{e1} kgf</b> berbanding {e2} kgf ({e3})");  // ternaries with different text share a number
+  assert.equal(by('R = 0.5').en, 'R = 0.5 w');                       // \u escapes decoded
+  assert.equal(rows.some(r => /data-en/.test(r.en || '')), false);
+  assert.match(rows.warning, /12 helper call\(s\): 10 read, 1 with variables only, 1 not read \(.*line 11\)/);    // L2(el.getAttribute(...), ...) is dynamic
+});
+
+test('pair arrays are off unless asked for', async () => {
+  const rows = await loadFile(fx('built-strings.js'), { callName: 'L2,tx:1' });
+  assert.equal(rows.some(r => r.en === 'it doubles'), false);
+});
