@@ -51,8 +51,8 @@ shapes on IMPAK.
 the terjemah-bm-dbp procedure before run 1 was opened ([sample-80.json](sample-80.json),
 [sample-audit.json](sample-audit.json)).
 
-- 9 of 80 rows have an issue an editor would change (11 %; 95 % interval 6–20 %, so somewhere
-  around 45 to 150 strings app-wide). All are WATCH level; none is a FIX-type error (no
+- 9 of 80 rows have an issue an editor would change (11 %; 95 % interval 6–20 %, so roughly
+  46 to 151 of the 756 strings). All are WATCH level; none is a FIX-type error (no
   placeholder, missing-string, pronoun, Indonesian-form or spacing error in the sample).
 - 4 are *mechanical* (a rule could catch them from the text alone): *di mana* as a relative word;
   *page*, *full screen* and *browser* kept in English where established Malay UI words exist;
@@ -133,3 +133,5 @@ check does not change until he moves the pin.
 | `sample-80.json`, `sample-audit.json` | the blind sample and its audit (`eac1632`) |
 | `run1.*` | run 1 report, JSON, log, labels and metrics (`ed201b8`) |
 | `run2.*` | run 2 with v0.1.3 (`142efdc`) |
+
+Both runs were reproduced from a fresh clone of bm-l10n (run 1 from `ed201b8`, whose `src/rules.js` and `termbase/patterns.csv` carry the hashes recorded in the protocol; run 2 from `65fc78b`): identical findings.
