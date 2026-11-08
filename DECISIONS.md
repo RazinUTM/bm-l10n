@@ -61,3 +61,8 @@ Decided by: Ahmad Razin (review page "IMPAK BM review", 8 Nov 2026).
 Decision: (1) an accepted-findings CSV (`rule,file,match,note`) removes findings the author has decided to keep from the counts and lists them under "Accepted", matching on text rather than line-based keys, with stale entries reported; (2) a termbase term contained in a longer termbase term is masked there (longest match wins, any tier); (3) termbase `status=flagged` marks a form that PRPM does not support and reports it as WATCH.
 Rationale: the author kept three strings against the termbase (review N2, N6, N7); without (1) they would stay as WATCH on every pull request and teach him to ignore the check. (2) follows from N1 (*university-linked → berkait universiti* while *linked* stays). (3) follows from the PRPM check of *bergraduat*.
 Decided by: AI, from the author's answers; author to confirm with the IMPAK pull request.
+
+## 2026-11-08 A flagged term the author keeps goes into the accepted list
+Decision: when the author keeps a form that PRPM does not support (IMPAK: *bergraduat*), the termbase keeps `status=flagged` with the evidence, and the decision goes into the accepted-findings file with its reason. No new status value.
+Rationale: the termbase stays a truthful record of what DBP supports; the accepted list is the record of what the project decided; the report shows both.
+Decided by: Ahmad Razin (choice A, 8 Nov 2026), mechanism by AI.

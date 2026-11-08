@@ -1,29 +1,23 @@
-# bm-lint report — IMPAK – Technovation Park, branch bm-lint-termbase after the author's review (8 Nov 2026)
+# bm-lint report — IMPAK – Technovation Park, PR #1 final state (8 Nov 2026)
 
 1578 strings in 11 file(s) (106 of them Malay-only, checked on the Malay side alone): src/i18n.js, content/texts.js, content/glossary.js, content/lessons.js, content/moves.js, content/game-ms.js, src/advice.js, src/app.js, src/bench.js, src/debrief.js, src/game.js.
 
-**FIX 0 · WATCH 1 · INFO 2**
+**FIX 0 · WATCH 0 · INFO 2**
 
 Loader notes:
 - src/advice.js: evaluation stopped early (Cannot read properties of undefined (reading 'CFG')); 21 pairs read
 - src/app.js: evaluation stopped early (Cannot read properties of undefined (reading 'CFG')); 0 pairs read
 
-By rule: R11 1 · R13 2
+By rule: R11 1 · R13 1
 
-Accepted by the author and not counted: 5 (listed at the end).
-
-## WATCH (1)
-
-| # | rule | file : key | EN | MS | finding | suggest |
-|---|---|---|---|---|---|---|
-| 1 | R13 | `termbase:graduate` | graduate | bergraduat | PRPM does not support "bergraduat": a startup leaving the incubator. Khidmat Nasihat (2009-2021): graduat and graduasi are not in Kamus Dewan Edisi Keempat or Kamus Dewan Perdana; a graduate (person) is siswazah. Author to decide: keep bergraduat as a project term, or rephrase (17 strings) | https://prpm.dbp.gov.my/Cari1?d=175768&keyword=graduat |
+Accepted by the author and not counted: 6 (listed at the end).
 
 ## INFO (2)
 
 - **R11** "Land" kept in English in 3 strings, not in 2 — decide once and add it to the termbase (kept: src/game.js:L@667#114, src/game.js:L@951#348, src/game.js:L@1153#467; not: src/bench.js:L@99#16, src/game.js:L@933#299)
 - **R13** "t/b" not yet checked against PRPM → https://prpm.dbp.gov.my/Cari1?keyword=t%2Fb
 
-## Accepted (5)
+## Accepted (6)
 
 | rule | file : key | MS | note |
 |---|---|---|---|
@@ -32,6 +26,7 @@ Accepted by the author and not counted: 5 (listed at the end).
 | R10 | `src/debrief.js:L@116#38` | Belanjakan dana tersebut untuk kerja modal sebelum bulan 24: bangunan, services… | author keeps dana tersebut in this tip (review N2, 8 Nov 2026) |
 | R11 | `*:Leave` |  | the strings that translate Leave use it as a verb (Tinggalkan sesi); the Deal Room option stays Leave (checked 8 Nov 2026) |
 | R11 | `*:Take` |  | the strings that translate Take use it as a verb (Ambil pinjaman, Ikut lawatan); the Deal Room option stays Take (checked 8 Nov 2026) |
+| R13 | `termbase:graduate` | bergraduat | not in Kamus Dewan (PRPM, 8 Nov 2026); the author keeps it as a declared project term for a startup leaving the incubator (8 Nov 2026) |
 
 ## Rules
 
