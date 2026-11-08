@@ -1,0 +1,5 @@
+node_modules/
+*.log
+.DS_Store
+# PRPM lookups are cached locally and never committed: the dictionary content belongs to DBP
+.prpm-cache/

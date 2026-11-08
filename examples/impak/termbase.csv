@@ -1,0 +1,30 @@
+en,bm,tier,reject,status,source,note
+pause,jeda,1,dijeda,checked,https://prpm.dbp.gov.my/Cari1?keyword=jeda,"project ruling 2026-11-03: paused state is ""berjeda""; ""dijeda"" rejected"
+paused,berjeda,1,dijeda,checked,https://prpm.dbp.gov.my/Cari1?keyword=jeda,
+phase,Fasa,1,,unchecked,,"decide once: 19 strings keep ""Phase"", 5 use ""Fasa"" (audit 2026-11-05); Fasa recommended"
+previous,sebelumnya,1,,unchecked,,"label form; ""sebelum"" alone is a preposition"
+settings,Tetapan,1,,unchecked,,
+server,pelayan,1,,unchecked,,consistent in the app; acceptable for audience B
+benchmark,penanda aras,1,,checked,https://prpm.dbp.gov.my/Cari1?keyword=penanda%20aras,PRPM-checked by the author
+private,persendirian,1,,checked,https://prpm.dbp.gov.my/Cari1?keyword=persendirian,"not ""peribadi"" (personal)"
+occupancy,penghunian,1,,unchecked,,"""kadar penghunian"" is the property-sector term"
+Level,Level,2,,n/a,,"game term kept in English across all files; capitalised en = case-sensitive match, so ""six levels"" in prose is not a hit"
+park,park,2,taman,n/a,,product term
+Deal Room,Deal Room,2,Bilik Urus Niaga|Bilik Perjanjian,n/a,,"DECISIONS 2026-11-04: game terms stay in English"
+drift,drift,2,hanyut|hanyutan,n/a,,
+upkeep,upkeep,2,penyelenggaraan,n/a,,
+checkpoint,checkpoint,2,,n/a,,
+downturn,downturn,2,,n/a,,"glossary may explain it as kemelesetan; the term itself stays English"
+bailout,bailout,2,,n/a,,
+headroom,headroom,2,,n/a,,
+serviced,serviced,2,tanpa perkhidmatan|berperkhidmatan,n/a,,"zone panel term; ""tanpa perkhidmatan"" rejected in prose for consistency"
+action point,action point,2,,n/a,,
+Development Fund,Development Fund,2,Dana Pembangunan|Tabung Pembangunan,n/a,,
+FCR12,FCR12,2,,n/a,,
+engine,engine,2,enjin,n/a,,simulation engine
+tile,tile,2,jubin,n/a,,UI tile
+hover,hover,2,,n/a,,
+team,,3,,n/a,,"kept as ""team"" today; by the tier test an everyday word (pasukan). Decide against the printed cards and the GM console"
+survival,,3,,n/a,,"part label ""Survival"" vs phase ""Bertahan"": one concept, two forms"
+dashboard,,3,,n/a,,
+zoom,,3,,n/a,,"Kamus Dewan has ""zum""; keep ""zoom"" or switch, once"

@@ -1,0 +1,16 @@
+{
+  "name": "bm-l10n",
+  "version": "0.1.0",
+  "description": "Bahasa Melayu (Malaysia) localisation toolkit: lint EN/MS string files against a project termbase and DBP-aligned rules; technical terms stay in English.",
+  "type": "module",
+  "bin": { "bml": "bin/bml.js" },
+  "files": ["bin", "src", "termbase", "README.md", "LICENSE"],
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "lint:impak": "node bin/bml.js lint --termbase examples/impak/termbase.csv --patterns termbase/patterns.csv --out examples/impak/report.md"
+  },
+  "engines": { "node": ">=18" },
+  "license": "MIT",
+  "author": "Ahmad Razin Zainal Abidin (Universiti Teknologi Malaysia)",
+  "keywords": ["bahasa-melayu", "malay", "localisation", "i18n", "lint", "dbp", "prpm", "terminology"]
+}

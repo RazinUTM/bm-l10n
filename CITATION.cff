@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "bm-l10n: a terminology and QA toolkit for Bahasa Melayu (Malaysia) app localisation"
+authors:
+  - family-names: Zainal Abidin
+    given-names: Ahmad Razin
+    affiliation: Universiti Teknologi Malaysia
+version: 0.1.0
+date-released: 2026-11-08
+license: MIT
+repository-code: https://github.com/RazinUTM/bm-l10n

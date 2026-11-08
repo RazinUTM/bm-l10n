@@ -1,0 +1,36 @@
+{
+  "en": {
+    "btn.save": "Save",
+    "btn.next": "Next",
+    "kpi.cash": "Cash, Cr",
+    "tip.cash": "Keep an eye on the Cash tile: the small arrow is the monthly change.",
+    "tip.gm": "Waiting for the Game Master to start the clock.",
+    "lbl.game": "Game",
+    "files.n": "{n} files selected",
+    "msg.ok": "Your file has been saved in {folder}.",
+    "state.paused": "Paused",
+    "nav.home.tip": "Your practice game is paused and kept",
+    "esg": "Clearing forest costs ESG.",
+    "lvl.prev": "Previous level",
+    "plural": "{count, plural, one{# file} other{# files}}",
+    "same": "Open the Deal Room card now",
+    "stiff": "The stiffness matrix is singular."
+  },
+  "ms": {
+    "btn.save": "Sila simpan",
+    "btn.next": "Seterusnya",
+    "kpi.cash": "Tunai, Cr",
+    "tip.cash": "Perhatikan tile Cash: anak panah kecil ialah perubahan bulanan.",
+    "tip.gm": "Menunggu Game Master mulakan jam.",
+    "lbl.game": "Permainan",
+    "files.n": "{n} fail-fail dipilih",
+    "msg.ok": "Fail anda telah di simpan disini.",
+    "state.paused": "Berjeda",
+    "nav.home.tip": "Permainan latihan anda dijeda dan disimpan",
+    "esg": "Membersihkan hutan mengurangkan ESG.",
+    "lvl.prev": "Level sebelum",
+    "plural": "{count, plural, one{# fail} other{# fail}}",
+    "same": "Open the Deal Room card now",
+    "stiff": "Matriks kekakuan adalah merupakan singular."
+  }
+}

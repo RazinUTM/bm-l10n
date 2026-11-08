@@ -1,0 +1,22 @@
+pattern,level,suggest,note,flags
+\bbisa\b,FIX,boleh,Indonesian "bisa"; Malaysian Malay uses "boleh"
+\bkarena\b,FIX,kerana,Indonesian spelling
+\bbutuh\b,FIX,perlu,Indonesian "butuh"
+\bkantor\b,FIX,pejabat,Indonesian "kantor"
+\b(meng)?unduh\b,FIX,muat turun,Indonesian "unduh" for download
+\b(meng)?unggah\b,FIX,muat naik,Indonesian "unggah" for upload
+\bsedang berlangsung\b,WATCH,sedang berjalan,"fine Malay, but often a calque of ""in progress"" where ""sedang berjalan"" or ""dalam proses"" reads better"
+\bmembeli masa\b,WATCH,memberi anda masa,"calque of ""buys time"""
+\bmengira turun\b,WATCH,semakin susut / menurun,"calque of ""counts down"""
+\bmengambil tempat\b,WATCH,berlangsung,"calque of ""take place"""
+\bseperti sedia ada\b,WATCH,keadaan … sekarang,"""sedia ada"" means existing/available; ""as it stands"" is about the current state"
+(^|\s)sebelum\s*:|\bsebelum$,WATCH,sebelumnya,"bare ""sebelum"" is a preposition; as a label it needs -nya"
+\(pilihan\),WATCH,(tidak wajib),"calque of ""(optional)"""
+\bmembersihkan hutan\b,FIX,menebang hutan,"""membersihkan"" reads as cleaning; forest clearing is ""menebang"" or ""pembukaan hutan"""
+\b(kotak|garis|garisan)\s+(padat|pejal)\b,WATCH,garis penuh,"""padat/pejal"" mean dense or not hollow, not a line style"
+\b(sheet|fail|data|akaun|dokumen|maklumat)\s+peribadi\b,WATCH,… persendirian,"""peribadi"" = personal; ""persendirian"" = private (not public)"
+\byang\s+\S+(\s+\S+)?\s+yang\b,WATCH,restructure,two "yang" within a few words usually marks a calqued relative clause
+\b(atau|dan|untuk|boleh|sila)\s+jeda\b,WATCH,jedakan,"""jeda"" is a noun; as a verb in a sentence it takes -kan"
+\bberbulan\b(?!-bulan),WATCH,berbulan-bulan,reduplicated form for the indefinite plural
+\batas akaun\b,WATCH,di bawah akaun,spoken form; written Malay uses "di bawah"
+"[\p{Ll},;]\s+Anda\b",WATCH,anda,capitalised mid-sentence "Anda" is the Indonesian convention,-
