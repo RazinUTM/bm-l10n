@@ -1,0 +1,179 @@
+{
+  "summary": {
+    "rows": 756,
+    "msOnly": 0,
+    "files": [
+      "p1_start_notes.html",
+      "p2_slides.html",
+      "p3_explorer_ex_lab.html",
+      "app.js"
+    ],
+    "warnings": [
+      "p3_explorer_ex_lab.html: 1 \"en\" element(s) without a \"ms\" partner (line 138)",
+      "app.js: evaluation stopped early (Cannot read properties of undefined (reading 'querySelectorAll')); 5 pairs read",
+      "app.js: 97 helper call(s): 91 read, 3 with variables only, 3 not read (one side has no literal text, or not an (en, ms) pair; line 34, 35, 594)"
+    ],
+    "FIX": 0,
+    "WATCH": 14,
+    "INFO": 1,
+    "accepted": 0,
+    "byRule": {
+      "R04": 1,
+      "R12": 13,
+      "R11": 1
+    }
+  },
+  "findings": [
+    {
+      "rule": "R04",
+      "level": "WATCH",
+      "file": "p3_explorer_ex_lab.html",
+      "key": "v-lab/span@259#205",
+      "en": "kgf per division",
+      "ms": "kgf per division",
+      "msg": "MS is identical to EN; intentional?",
+      "suggest": ""
+    },
+    {
+      "rule": "R12",
+      "level": "WATCH",
+      "file": "app.js",
+      "key": "pair@470#15",
+      "en": "B is where the moment is taken, not where the beam bends: for any load on ABC the same lever rule applies, and the line passes through zero at B and continues negative to C.",
+      "ms": "B ialah titik di mana moment diambil, bukan tempat beam melentur: bagi sebarang load pada ABC, lever rule yang sama digunakan, dan garis melalui sifar di B serta berterusan negatif hingga C.",
+      "msg": "\"di mana / yang mana\" used as a relative word is a calque of where / which; DBP Khidmat Nasihat: they belong in questions only (12.08.2010, 27.08.2012, 14.07.2017)",
+      "suggest": "yang / tempat / iaitu, or split the sentence"
+    },
+    {
+      "rule": "R12",
+      "level": "WATCH",
+      "file": "p1_start_notes.html",
+      "key": "n1/span@136#56",
+      "en": "the point where \\(R\\) is evaluated",
+      "ms": "titik di mana \\(R\\) dinilai",
+      "msg": "\"di mana / yang mana\" used as a relative word is a calque of where / which; DBP Khidmat Nasihat: they belong in questions only (12.08.2010, 27.08.2012, 14.07.2017)",
+      "suggest": "yang / tempat / iaitu, or split the sentence"
+    },
+    {
+      "rule": "R12",
+      "level": "WATCH",
+      "file": "p1_start_notes.html",
+      "key": "n1/span@137#58",
+      "en": "the section where \\(V\\) or \\(M\\) is read",
+      "ms": "section di mana \\(V\\) atau \\(M\\) dibaca",
+      "msg": "\"di mana / yang mana\" used as a relative word is a calque of where / which; DBP Khidmat Nasihat: they belong in questions only (12.08.2010, 27.08.2012, 14.07.2017)",
+      "suggest": "yang / tempat / iaitu, or split the sentence"
+    },
+    {
+      "rule": "R12",
+      "level": "WATCH",
+      "file": "p1_start_notes.html",
+      "key": "n1/span@144#66",
+      "en": "the section where \\(R_A\\) is read",
+      "ms": "section di mana \\(R_A\\) dibaca",
+      "msg": "\"di mana / yang mana\" used as a relative word is a calque of where / which; DBP Khidmat Nasihat: they belong in questions only (12.08.2010, 27.08.2012, 14.07.2017)",
+      "suggest": "yang / tempat / iaitu, or split the sentence"
+    },
+    {
+      "rule": "R12",
+      "level": "WATCH",
+      "file": "p1_start_notes.html",
+      "key": "n2/span@180#95",
+      "en": "at support B, where beam ABC is continuous",
+      "ms": "di support B, di mana beam ABC selanjar",
+      "msg": "\"di mana / yang mana\" used as a relative word is a calque of where / which; DBP Khidmat Nasihat: they belong in questions only (12.08.2010, 27.08.2012, 14.07.2017)",
+      "suggest": "yang / tempat / iaitu, or split the sentence"
+    },
+    {
+      "rule": "R12",
+      "level": "WATCH",
+      "file": "p1_start_notes.html",
+      "key": "n4/p@263#146",
+      "en": "Two remarks. The principle gives exact ordinates only for statically determinate structures, where the released structure is a mechanism of straight rigid links; for an indeterminate beam the released structure bends and the principle gives the shape only. And the kinks of the deflected shape lie at the hinges and at the released restraint, never inside a rigid member: a quick visual check of any influence line you compute.",
+      "ms": "Dua catatan. Prinsip ini memberi ordinate yang tepat hanya bagi struktur statically determinate, di mana released structure ialah mechanism yang terdiri daripada rigid link yang lurus; bagi beam indeterminate, released structure melentur dan prinsip ini hanya memberi bentuk. Selain itu, bengkokan pada deflected shape terletak di hinge dan di restraint yang dilepaskan, tidak sekali-kali di dalam anggota rigid: semakan visual yang pantas bagi mana-mana influence line yang anda kira.",
+      "msg": "\"di mana / yang mana\" used as a relative word is a calque of where / which; DBP Khidmat Nasihat: they belong in questions only (12.08.2010, 27.08.2012, 14.07.2017)",
+      "suggest": "yang / tempat / iaitu, or split the sentence"
+    },
+    {
+      "rule": "R12",
+      "level": "WATCH",
+      "file": "p1_start_notes.html",
+      "key": "n6/p@321#188",
+      "en": "<b>How to compare.</b> Report the difference \\(\\eta_{\\text{test}}-\\eta_{\\text{theory}}\\) at every halt. A percentage difference is meaningful only where the theoretical ordinate is not small: at halt 2, where \\(\\eta_A = 0.2\\), a gauge error of one division (0.02 per unit load) is already 10 %, and where the theoretical value is zero the percentage is undefined. Judge the agreement by the absolute difference and by the shape of the line.",
+      "ms": "<b>Cara membandingkan.</b> Laporkan perbezaan \\(\\eta_{\\text{test}}-\\eta_{\\text{theory}}\\) pada setiap halt. Perbezaan peratusan hanya bermakna apabila ordinate teori tidak kecil: di halt 2, di mana \\(\\eta_A = 0.2\\), error gauge satu division (0.02 per unit load) sudah 10 %, dan apabila nilai teori sifar, peratusan tidak tertakrif. Nilai persetujuan berdasarkan perbezaan mutlak dan bentuk garis.",
+      "msg": "\"di mana / yang mana\" used as a relative word is a calque of where / which; DBP Khidmat Nasihat: they belong in questions only (12.08.2010, 27.08.2012, 14.07.2017)",
+      "suggest": "yang / tempat / iaitu, or split the sentence"
+    },
+    {
+      "rule": "R12",
+      "level": "WATCH",
+      "file": "p2_slides.html",
+      "key": "deck/span@57#16",
+      "en": "the point where \\(R\\) is read",
+      "ms": "titik di mana \\(R\\) dibaca",
+      "msg": "\"di mana / yang mana\" used as a relative word is a calque of where / which; DBP Khidmat Nasihat: they belong in questions only (12.08.2010, 27.08.2012, 14.07.2017)",
+      "suggest": "yang / tempat / iaitu, or split the sentence"
+    },
+    {
+      "rule": "R12",
+      "level": "WATCH",
+      "file": "p2_slides.html",
+      "key": "deck/span@58#18",
+      "en": "the section where \\(V\\), \\(M\\) are read",
+      "ms": "section di mana \\(V\\), \\(M\\) dibaca",
+      "msg": "\"di mana / yang mana\" used as a relative word is a calque of where / which; DBP Khidmat Nasihat: they belong in questions only (12.08.2010, 27.08.2012, 14.07.2017)",
+      "suggest": "yang / tempat / iaitu, or split the sentence"
+    },
+    {
+      "rule": "R12",
+      "level": "WATCH",
+      "file": "p2_slides.html",
+      "key": "sprev/span@6#1",
+      "en": "Previous",
+      "ms": "Sebelum",
+      "msg": "bare \"sebelum\" is a preposition; as a label it needs -nya",
+      "suggest": "sebelumnya"
+    },
+    {
+      "rule": "R12",
+      "level": "WATCH",
+      "file": "p3_explorer_ex_lab.html",
+      "key": "q3/span@141#95",
+      "en": "The only vertex where \\(\\eta_B\\) peaks is C (1.76). Try the 4 kg axle at C, then the 2 kg axle at C, and compare.",
+      "ms": "Satu-satunya vertex di mana \\(\\eta_B\\) memuncak ialah C (1.76). Cuba axle 4 kg di C, kemudian axle 2 kg di C, dan bandingkan.",
+      "msg": "\"di mana / yang mana\" used as a relative word is a calque of where / which; DBP Khidmat Nasihat: they belong in questions only (12.08.2010, 27.08.2012, 14.07.2017)",
+      "suggest": "yang / tempat / iaitu, or split the sentence"
+    },
+    {
+      "rule": "R12",
+      "level": "WATCH",
+      "file": "p3_explorer_ex_lab.html",
+      "key": "q7/span@193#146",
+      "en": "(b) Take the combined uncertainty as ±0.03 per unit load in round numbers. Among the halts with a non-zero theoretical ordinate, select those where this uncertainty alone could give a percentage difference above 10 %.",
+      "ms": "(b) Ambil uncertainty gabungan sebagai ±0.03 per unit load (nombor bulat). Antara halt yang mempunyai ordinate teori bukan sifar, pilih halt di mana uncertainty ini sahaja boleh memberi perbezaan peratusan melebihi 10 %.",
+      "msg": "\"di mana / yang mana\" used as a relative word is a calque of where / which; DBP Khidmat Nasihat: they belong in questions only (12.08.2010, 27.08.2012, 14.07.2017)",
+      "suggest": "yang / tempat / iaitu, or split the sentence"
+    },
+    {
+      "rule": "R12",
+      "level": "WATCH",
+      "file": "p3_explorer_ex_lab.html",
+      "key": "tk4/span@63#31",
+      "en": "Keep these loads. Move the group with the halts or the slider and find the <b>largest R<sub>B</sub></b>. Enter it, and the halt where P<sub>1</sub> stands.",
+      "ms": "Kekalkan load ini. Gerakkan kumpulan load dengan halt atau slider dan cari <b>R<sub>B</sub> terbesar</b>. Masukkan nilainya, dan halt di mana P<sub>1</sub> berada.",
+      "msg": "\"di mana / yang mana\" used as a relative word is a calque of where / which; DBP Khidmat Nasihat: they belong in questions only (12.08.2010, 27.08.2012, 14.07.2017)",
+      "suggest": "yang / tempat / iaitu, or split the sentence"
+    },
+    {
+      "rule": "R11",
+      "level": "INFO",
+      "file": "*",
+      "key": "Worked",
+      "en": "Worked",
+      "ms": "",
+      "msg": "\"Worked\" kept in English in 7 strings, not in 18 — decide once and add it to the termbase (kept: p1_start_notes.html:n5/span@289#163, p1_start_notes.html:n5/span@297#168, p1_start_notes.html:n8/p@363#216; not: p3_explorer_ex_lab.html:q1/span@113#62, p3_explorer_ex_lab.html:q1/span@115#64, p3_explorer_ex_lab.html:q2/span@126#74)",
+      "suggest": ""
+    }
+  ],
+  "accepted": []
+}

@@ -1,0 +1,25 @@
+{
+ "summary": {
+  "R04": 1,
+  "R12": 13,
+  "R11": 1
+ },
+ "FIX": 0,
+ "WATCH": 14,
+ "INFO": 1,
+ "fix_watch": 14,
+ "strict": "13/14",
+ "standard": "14/14",
+ "recall_sample": "1/9",
+ "recall_mechanical": "1/4",
+ "caught_sample_rows": [
+  26
+ ],
+ "di_mana": {
+  "occurrences": 16,
+  "relative": 12,
+  "flagged": 12,
+  "correct_uses": 4,
+  "correct_flagged": 0
+ }
+}

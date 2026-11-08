@@ -8,7 +8,7 @@ branding:
   color: blue
 inputs:
   files:
-    description: String files to check, separated by spaces (JSON tables, JS tables, JS with inline L() calls, Malay-only JS tables).
+    description: String files to check, separated by spaces (JSON tables, JS tables, JS with inline L() calls, Malay-only JS tables, HTML pages with en/ms sibling elements).
     required: true
   termbase:
     description: The project termbase CSV (en,bm,tier,reject,status,source,note). Leave empty for none.
@@ -19,9 +19,13 @@ inputs:
     required: false
     default: ''
   call:
-    description: Names of the inline bilingual helpers, comma-separated (e.g. L,LL).
+    description: Names of the inline bilingual helpers, comma-separated (e.g. L,LL). name:k skips k leading arguments (tx:1 for tx(element, en, ms)).
     required: false
     default: 'L'
+  pair-arrays:
+    description: "'true' also reads two-string arrays [\"en text\", \"teks ms\"] as pairs (one of the two must contain a space)."
+    required: false
+    default: 'false'
   accepted:
     description: Findings the author has accepted (CSV rule,file,match,note); they leave the counts and are listed at the end of the report.
     required: false
@@ -55,6 +59,7 @@ runs:
         BML_TERMBASE: ${{ inputs.termbase }}
         BML_PATTERNS: ${{ inputs.patterns }}
         BML_CALL: ${{ inputs.call }}
+        BML_PAIR_ARRAYS: ${{ inputs.pair-arrays }}
         BML_IGNORE: ${{ inputs.ignore }}
         BML_WITH: ${{ inputs.with }}
         BML_ACCEPT: ${{ inputs.accepted }}

@@ -1,6 +1,6 @@
 {
   "name": "bm-l10n",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Bahasa Melayu (Malaysia) localisation toolkit: lint EN/MS string files against a project termbase and DBP-aligned rules; technical terms stay in English.",
   "type": "module",
   "bin": { "bml": "bin/bml.js" },

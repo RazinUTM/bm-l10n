@@ -94,7 +94,8 @@ const ALWAYS = [
   { re: /\b(ke)(sini|situ|sana|atas|bawah|hadapan|belakang)\b/i, msg: 'preposition "ke" is written apart from a place word', suggest: '"ke $2"' },
   { re: /\bdi\s+(simpan|padam|hantar|muat|pilih|buka|tutup|tambah|buang|ubah|kemas|cetak|salin|papar|semak|sahkan|tetapkan|jalankan|mulakan)\b/i, msg: 'passive prefix "di-" must be attached to the verb', suggest: '"di$1"' },
   { re: /(\b\d+|\{[^{}]+\}|\b(?:beberapa|banyak|semua|setiap|para|ramai|segala|pelbagai|kebanyakan))\s+(\p{L}+)-\2\b/iu, msg: 'reduplicated plural after a number or quantifier', suggest: '"$1 $2"' },
-  { re: /\bantara\s+satu\s+sama\s+lain\b/i, msg: 'calque of "one another"', suggest: '"sesama sendiri" or restructure' },
+  // Not here: "antara satu sama lain". v0.1.0-0.1.2 called it a calque; DBP Khidmat Nasihat says it is
+  // correct (21.02.2011, 05.11.2011) and Kamus Dewan uses it. Found by the Lab S2 out-of-sample test.
 ];
 export function r05_grammar(rows) {
   const out = [];
@@ -132,7 +133,10 @@ export function r08_plural(rows) {
 }
 
 /* ---------- R09 control names quoted in prose must match the translated label ---------- */
-const LABEL_SPLIT = /\s[-–—]\s|[,·:(–—]/;          // an intra-word hyphen ("Take-home") does not split
+// A label splits at a spaced dash, an em dash, a comma, a middle dot, a colon or an opening bracket.
+// An intra-word hyphen ("Take-home") or an unspaced en dash inside a name or range
+// ("Müller–Breslau", "1–11") does not split: v0.1.2 split there and read "Müller" as a label.
+const LABEL_SPLIT = /\s[-–—]\s|[,·:(—]|\s–|–\s/;
 function labelHeads(en) {
   const heads = new Set([en.trim()]);
   const first = en.split(LABEL_SPLIT)[0].trim();
@@ -251,7 +255,9 @@ export function r11_mixed(rows, ctx) {
       if (seen.has(lw) || stop.has(lw) || known.has(lw)) continue;
       seen.add(lw);
       if (!stats.has(w)) stats.set(w, { kept: [], gone: [] });
-      (has(r.ms, w, '') ? stats.get(w).kept : stats.get(w).gone).push(`${r.file}:${r.key}`);
+      // kept whatever its case: Malay word order often moves a sentence-initial English word to the
+      // middle of the sentence, where it is written in lower case ("Gauge resolution" -> "Resolusi gauge")
+      (has(r.ms, w) ? stats.get(w).kept : stats.get(w).gone).push(`${r.file}:${r.key}`);
     }
   }
   const out = [];

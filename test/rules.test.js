@@ -303,3 +303,50 @@ test('built strings with a localised expression on each side are not a placehold
   assert.equal(rows[0].ms, '${e3} diarahkan di Zon ${e2}.');
   assert.deepEqual(r01_placeholders(rows), []);
 });
+
+/* ---------- v0.1.3 rule fixes from the Lab S2 out-of-sample test ---------- */
+test('R05 does not flag "antara satu sama lain" (DBP: correct)', async () => {
+  const { r05_grammar } = await import('../src/rules.js');
+  const rows = [{ file: 'p.html', key: 'k', en: 'rotate relative to each other', ms: 'berputar relatif antara satu sama lain' }];
+  assert.deepEqual(r05_grammar(rows), []);
+});
+
+test('R09 does not split a name at an unspaced en dash', async () => {
+  const { r09_control_names } = await import('../src/rules.js');
+  const rows = [
+    { file: 'p.html', key: 'h', en: 'Müller–Breslau principle', ms: 'Prinsip Müller–Breslau' },
+    { file: 'p.html', key: 'a', en: 'Müller–Breslau: release the support, displace it and read the shape', ms: 'Müller–Breslau: lepaskan support, anjakkan dan baca bentuknya' },
+    { file: 'p.html', key: 'b', en: 'Use the Müller–Breslau method to find the ordinate at halt 4', ms: 'Guna kaedah Müller–Breslau untuk mencari ordinate di halt 4' },
+    { file: 'p.html', key: 'c', en: 'The Müller–Breslau shortcut gives the shape of every line', ms: 'Jalan pintas Müller–Breslau memberi bentuk setiap garis' },
+  ];
+  assert.deepEqual(r09_control_names(rows, { terms: [], options: {} }), []);
+  // a spaced dash still separates a label from its description
+  const rows2 = [
+    { file: 'p.html', key: 'l', en: 'Explorer – tasks', ms: 'Penjelajah – tugasan' },
+    { file: 'p.html', key: 'p', en: 'Open the Explorer and try all five tasks before the lab', ms: 'Buka Explorer dan cuba kelima-lima tugasan sebelum makmal' },
+  ];
+  assert.equal(r09_control_names(rows2, { terms: [], options: {} }).length, 1);
+});
+
+test('R11 counts a kept word in lower case as kept', async () => {
+  const { r11_mixed } = await import('../src/rules.js');
+  const rows = ['Gauge resolution, ±1 division|Resolusi gauge, ±1 division', 'Gauge reading that does not return to zero|Bacaan gauge yang tidak kembali ke sifar',
+    'Gauge ±1 division|Gauge ±1 division', 'Gauge, ±1 division|Gauge, ±1 division'].map((x, i) => { const [en, ms] = x.split('|'); return { file: 'p.html', key: String(i), en, ms }; });
+  assert.deepEqual(r11_mixed(rows, { terms: [], options: {} }), []);
+});
+
+test('pattern: di mana / yang mana as a relative word, not in questions', async () => {
+  const { loadPatterns } = await import('../src/termbase.js');
+  const { r12_patterns } = await import('../src/rules.js');
+  const patterns = (await loadPatterns(join(here, '..', 'termbase', 'patterns.csv'))).filter(p => /mana/.test(p.pattern));
+  const hit = ms => r12_patterns([{ file: 'x', key: 'k', en: 'x', ms }], { patterns }).length > 0;
+  assert.equal(hit('B ialah titik di mana moment diambil, bukan tempat beam melentur.'), true);
+  assert.equal(hit('Perbezaan hanya bermakna di halt 2, di mana η = 0.2, dan bukan di tempat lain.'), true);
+  assert.equal(hit('Pilih jawapan yang mana sesuai dengan data.'), true);
+  assert.equal(hit('Di mana anda tinggal?'), false);
+  assert.equal(hit('Pernyataan yang mana benar?'), false);
+  assert.equal(hit('Dengan jisim di mana-mana halt, jumlah bacaan sama dengan beban.'), false);
+  assert.equal(hit('Tentukan di mana load perlu diletakkan.'), false);
+  assert.equal(hit('Di mana ada kemahuan, di situ ada jalan.'), false);
+  assert.equal(hit('Jumlahnya mesti sama, walau di mana pun jisim itu berada.'), false);   // concessive, not relative
+});

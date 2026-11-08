@@ -24,6 +24,7 @@ args=(--call "${BML_CALL:-L}" --patterns "$patterns" --no-fail)
 [ -z "${BML_IGNORE:-}" ] || args+=(--ignore "$BML_IGNORE")
 [ -z "${BML_WITH:-}" ] || args+=(--with "$BML_WITH")
 [ -z "${BML_ACCEPT:-}" ] || args+=(--accept "$BML_ACCEPT")
+[ "${BML_PAIR_ARRAYS:-false}" != "true" ] || args+=(--pair-arrays)
 read -r -a files <<< "${BML_FILES:-}"
 if [ "${#files[@]}" -eq 0 ]; then
   echo "::error title=BM lint::no files given (input: files)"

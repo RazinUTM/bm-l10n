@@ -65,11 +65,13 @@ Exit code is 1 when there is at least one FIX (use `--no-fail` to disable), so `
 | JSON `{ "en": {...}, "ms": {...} }` (nested keys allowed) | `locales/strings.json` |
 | JSON flat `{ "key": { "en": "...", "ms": "..." } }` or `[{ "term", "en", "ms" }]` | glossary exports |
 | JS script or module declaring `const X = { en: {...}, ms: {...} }` or a glossary array | `src/i18n.js`, `content/texts.js` |
-| JS with inline calls `L("English", "Melayu")` (`--call L,LL` for several helper names) | `src/game.js` |
+| JS with inline calls `L("English", "Melayu")` (`--call L,LL` for several helper names; `tx:1` skips a leading argument, for `tx(element, en, ms)`); strings built by concatenation are read as template literals (`"Score " + c` → `Score ${e1}`), and `{…}[key]` / `[…][i]` literals pair element by element | `src/game.js`, Lab S2 `app.js` |
+| HTML pages that carry both languages as sibling elements with class `en` and `ms` (CSS shows one), plus `data-…-en` / `data-…-ms` attribute pairs; markup inside a string is kept | Lab S2 `p1_start_notes.html` |
+| JS data with two-string `["en text", "teks ms"]` arrays (opt-in `--pair-arrays`; one of the two must contain a space) | exercise data in Lab S2 `app.js` |
 | JS objects at any depth with `en`/`ms` sub-objects or strings, including scripts that assign `window.X = …` or `root.X = …` inside an IIFE | `content/lessons.js`, `content/moves.js` |
 | JS tables that hold Malay only (translations of text whose English lives elsewhere) | `content/game-ms.js` |
 
-JS files are evaluated in a `node:vm` sandbox with no access to the host; functions and side effects are ignored. If a script stops with an error part-way, whatever it defined before the error is still read, literal `en: '…', ms: '…'` pairs are read by pattern, and the report says so. Malay-only strings are checked on the Malay side alone (grammar, pronouns, rejected forms, patterns).
+JS files are evaluated in a `node:vm` sandbox with no access to the host; functions and side effects are ignored. If a script stops with an error part-way, whatever it defined before the error is still read, `en: …, ms: …` properties are read from the source, and the report says so. The report's loader notes also count helper calls that could not be read (a ternary choosing between two literals, for instance) and HTML `en` / `ms` elements without a partner. Malay-only strings are checked on the Malay side alone (grammar, pronouns, rejected forms, patterns).
 
 ## What it checks
 
@@ -79,14 +81,14 @@ JS files are evaluated in a `node:vm` sandbox with no access to the host; functi
 | R02 | FIX | missing MS string |
 | R03 | WATCH | strings that grew far beyond the 1.15–1.3× Malay normally needs (off unless `--with R03`) |
 | R04 | WATCH | multi-word MS identical to EN with no tier-2 term inside |
-| R05 | FIX | `adalah merupakan`, `disini` / `kesana`, `di simpan`, `3 fail-fail` |
+| R05 | FIX | `adalah merupakan`, `disini` / `kesana`, `di simpan`, `3 fail-fail` (not *antara satu sama lain*, which DBP accepts) |
 | R06 | FIX | `kamu / awak / engkau / kau / aku` in app strings (`--casual` to allow a persona voice) |
 | R07 | WATCH | `Sila` on a button or menu label |
 | R08 | WATCH | ICU plural branches Malay does not need |
 | R09 | FIX | prose that names a control by its English label while the label itself is translated (`tile Cash` vs label `Tunai`) |
 | R10 | FIX / WATCH | termbase: rejected forms, technical terms translated, chosen renderings not used |
 | R11 | INFO | the same English word kept in some strings and translated in others |
-| R12 | FIX / WATCH | calques and Indonesian forms from `patterns.csv` (`bisa`, `unduh`, "buys time", `(pilihan)`, `membersihkan hutan`, …) |
+| R12 | FIX / WATCH | calques and Indonesian forms from `patterns.csv` (`bisa`, `unduh`, "buys time", `(pilihan)`, `membersihkan hutan`, *di mana* / *yang mana* as a relative word, …) |
 | R13 | INFO / WATCH | termbase entries not yet checked against PRPM, with the URL to open; WATCH for a form the check found unsupported (`status=flagged`) |
 
 Strings that pass every rule are not listed. That means they contain no mechanical error; it says nothing about whether they read well — that judgement stays with a Malay-speaking reviewer or the authoring prompt.

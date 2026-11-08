@@ -20,3 +20,4 @@ pattern,level,suggest,note,flags
 \bberbulan\b(?!-bulan),WATCH,berbulan-bulan,reduplicated form for the indefinite plural
 \batas akaun\b,WATCH,di bawah akaun,spoken form; written Malay uses "di bawah"
 "[\p{Ll},;]\s+Anda\b",WATCH,anda,capitalised mid-sentence "Anda" is the Indonesian convention,-
+"(?<![.?!]\s*|^\s*)(?<!\b(?:tahu|ketahui|tentukan|cari|carikan|kenal pasti|lihat|tunjukkan|nyatakan|terangkan|tanya|bertanya|semak|periksa|fikirkan|pastikan|tandakan)\s+)\b(?:di|yang|dalam|dengan)\s+mana\b(?!-)(?!\s+(?:pun|jua)\b)(?![^.?!]*\?)",WATCH,"yang / tempat / iaitu, or split the sentence","""di mana / yang mana"" used as a relative word is a calque of where / which; DBP Khidmat Nasihat: they belong in questions only (12.08.2010, 27.08.2012, 14.07.2017)",
