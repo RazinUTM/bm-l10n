@@ -2,11 +2,41 @@
 
 A small toolkit for localising apps into **Bahasa Melayu (Malaysia)** the way a Malaysian would write it: everyday words in DBP-standard Malay, engineering / science / computing and product terms kept in English, and every terminology decision recorded once with its evidence.
 
-v0.1 ships one command, `bml lint`: mechanical checks on EN/MS string files against a project **termbase** and a **pattern list**, reported as FIX / WATCH / INFO. It is the QA layer; the writing is done by a person or by an authoring prompt, and a draft backend (`bml draft`) and an evaluation harness (`bml eval`) are planned (see `DESIGN.md`).
+It ships one command, `bml lint`: mechanical checks on EN/MS string files against a project **termbase** and a **pattern list**, reported as FIX / WATCH / INFO. It is the QA layer: the writing is done by a person or in a Claude session with the `terjemah-bm-dbp` skill, and the check runs on every pull request. An evaluation harness (`bml eval`) is planned (see `DESIGN.md`).
 
 It does **not** translate, and it does **not** contain or fetch dictionary content: PRPM (prpm.dbp.gov.my) belongs to Dewan Bahasa dan Pustaka. The termbase stores *your decision and the URL that supports it*.
 
-## Install and run
+## Use it from the browser (GitHub Actions, no terminal)
+
+1. Put the termbase in your app's repository, e.g. `content/termbase-bm.csv` (format below). You can edit it later in the browser: open the file on GitHub and press the pencil.
+2. Add this workflow as `.github/workflows/bm-lint.yml` (Claude can open this pull request for you):
+
+   ```yaml
+   name: BM lint
+   on:
+     pull_request:
+     workflow_dispatch:
+   permissions:
+     contents: read
+   jobs:
+     lint:
+       runs-on: ubuntu-latest
+       steps:
+         - uses: actions/checkout@v4
+         - uses: RazinUTM/bm-l10n@<commit-sha>   # v0.1.1
+           with:
+             files: src/i18n.js content/texts.js src/game.js
+             termbase: content/termbase-bm.csv
+             call: L,LL
+             ignore: R03
+   ```
+
+3. Every pull request now shows a **BM lint** check. Green: no FIX finding. Red: at least one; open *Details → Summary* for the report. FIX and WATCH findings also appear as notes on the changed files.
+4. To check the current state at any time: *Actions → BM lint → Run workflow*.
+
+Pin `uses:` to a commit SHA (or to a release tag once one exists) so a later change to bm-l10n never changes your check without a pull request of your own.
+
+## Install and run from a terminal
 
 Node ≥ 18, no dependencies.
 
@@ -35,9 +65,11 @@ Exit code is 1 when there is at least one FIX (use `--no-fail` to disable), so `
 | JSON `{ "en": {...}, "ms": {...} }` (nested keys allowed) | `locales/strings.json` |
 | JSON flat `{ "key": { "en": "...", "ms": "..." } }` or `[{ "term", "en", "ms" }]` | glossary exports |
 | JS script or module declaring `const X = { en: {...}, ms: {...} }` or a glossary array | `src/i18n.js`, `content/texts.js` |
-| JS with inline calls `L("English", "Melayu")` (`--call tr` to change the name) | `src/game.js` |
+| JS with inline calls `L("English", "Melayu")` (`--call L,LL` for several helper names) | `src/game.js` |
+| JS objects at any depth with `en`/`ms` sub-objects or strings, including scripts that assign `window.X = …` or `root.X = …` inside an IIFE | `content/lessons.js`, `content/moves.js` |
+| JS tables that hold Malay only (translations of text whose English lives elsewhere) | `content/game-ms.js` |
 
-JS files are evaluated in a `node:vm` sandbox with no access to the host; functions and side effects are ignored.
+JS files are evaluated in a `node:vm` sandbox with no access to the host; functions and side effects are ignored. If a script stops with an error part-way, whatever it defined before the error is still read, literal `en: '…', ms: '…'` pairs are read by pattern, and the report says so. Malay-only strings are checked on the Malay side alone (grammar, pronouns, rejected forms, patterns).
 
 ## What it checks
 
@@ -66,7 +98,7 @@ Strings that pass every rule are not listed. That means they contain no mechanic
 | column | meaning |
 |---|---|
 | `en` | the English term; a capitalised entry (`Level`) matches case-sensitively, lower-case matches any case |
-| `bm` | the Malay rendering your project chose; equals `en` for tier 2 |
+| `bm` | the Malay rendering your project chose; equals `en` for tier 2. Several allowed renderings are separated by `\|` (`impact\|impak ekonomi`) |
 | `tier` | `1` translate · `2` keep in English · `3` grey zone, decided per project |
 | `reject` | forms that must not appear, `\|`-separated (`dijeda`, `matriks kekakuan`) |
 | `status` | `checked` / `unchecked` / `n/a` — whether `bm` was checked against PRPM |
@@ -77,7 +109,7 @@ Three tiers, one test: *would the term appear as-is in an English journal paper,
 
 `patterns.csv` — `pattern, level, suggest, note, flags`: regular expressions over MS strings with a level each. The shipped list is generic Malaysian Malay; add project rows or a second file.
 
-A worked example lives in `examples/impak/` (termbase and lint report for IMPAK – Technovation Park v0.6, 442 string pairs).
+A worked example lives in `examples/impak/`: the termbase taken from IMPAK – Technovation Park's own BM glossary and the lint report on its main branch (1,578 strings in 11 files, 8 Nov 2026).
 
 ## Checking terms against PRPM
 
@@ -97,7 +129,7 @@ None bundled. `THIRD_PARTY_LICENSES.md` records the external resources the tool 
 
 ## Validation status
 
-`npm test` runs 14 tests covering every rule's positive case and the known false positives. A field run on IMPAK v0.6 reported 9 of the 11 FIX items found by a manual audit, plus one the audit missed (medal labels `Emas / Perak / Gangsa` vs prose `Gold / Silver / Bronze`). The termbase and pattern list are seeds: rows marked `unchecked` still need their PRPM evidence.
+`npm test` runs 25 tests covering every rule's positive case and the false positives met in the field. On IMPAK's 5 Nov code the lint reported 9 of the 11 FIX items found by a manual audit, plus one the audit missed (medal labels `Emas / Perak / Gangsa` vs prose `Gold / Silver / Bronze`); the author had fixed all of them by 7 Nov, and on today's main the check reports FIX 0 and 20 WATCH, each a real decision for the author. Those figures are in-sample (rules were tuned on this project); a second project is the next test. Termbase rows marked `unchecked` still need their PRPM evidence.
 
 ## Disclaimer
 

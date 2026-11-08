@@ -1,0 +1,52 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 Ahmad Razin Zainal Abidin and Universiti Teknologi Malaysia
+name: BM lint (bm-l10n)
+description: Check English / Bahasa Melayu string files against a project termbase; the report goes to the run's Summary page.
+author: Ahmad Razin Zainal Abidin
+branding:
+  icon: check-square
+  color: blue
+inputs:
+  files:
+    description: String files to check, separated by spaces (JSON tables, JS tables, JS with inline L() calls, Malay-only JS tables).
+    required: true
+  termbase:
+    description: The project termbase CSV (en,bm,tier,reject,status,source,note). Leave empty for none.
+    required: false
+    default: ''
+  patterns:
+    description: A calque-pattern CSV. Leave empty for the list shipped with bm-l10n.
+    required: false
+    default: ''
+  call:
+    description: Names of the inline bilingual helpers, comma-separated (e.g. L,LL).
+    required: false
+    default: 'L'
+  ignore:
+    description: Rules to skip, comma-separated (e.g. R03).
+    required: false
+    default: ''
+  fail-on-fix:
+    description: "'true' fails the check when there is at least one FIX finding."
+    required: false
+    default: 'true'
+outputs:
+  fix:
+    description: Number of FIX findings.
+    value: ${{ steps.lint.outputs.fix }}
+  watch:
+    description: Number of WATCH findings.
+    value: ${{ steps.lint.outputs.watch }}
+runs:
+  using: composite
+  steps:
+    - id: lint
+      shell: bash
+      env:
+        BML_FILES: ${{ inputs.files }}
+        BML_TERMBASE: ${{ inputs.termbase }}
+        BML_PATTERNS: ${{ inputs.patterns }}
+        BML_CALL: ${{ inputs.call }}
+        BML_IGNORE: ${{ inputs.ignore }}
+        BML_FAIL: ${{ inputs.fail-on-fix }}
+      run: bash "$GITHUB_ACTION_PATH/scripts/action.sh"

@@ -12,8 +12,8 @@ pattern,level,suggest,note,flags
 \bseperti sedia ada\b,WATCH,keadaan … sekarang,"""sedia ada"" means existing/available; ""as it stands"" is about the current state"
 (^|\s)sebelum\s*:|\bsebelum$,WATCH,sebelumnya,"bare ""sebelum"" is a preposition; as a label it needs -nya"
 \(pilihan\),WATCH,(tidak wajib),"calque of ""(optional)"""
-\bmembersihkan hutan\b,FIX,menebang hutan,"""membersihkan"" reads as cleaning; forest clearing is ""menebang"" or ""pembukaan hutan"""
-\b(kotak|garis|garisan)\s+(padat|pejal)\b,WATCH,garis penuh,"""padat/pejal"" mean dense or not hollow, not a line style"
+\bmembersihkan hutan\b,FIX,membuka hutan / pembukaan hutan / menebang hutan,"""membersihkan"" reads as cleaning; forest clearing is ""membuka hutan"", ""pembukaan hutan"" or ""menebang"""
+\b(kotak|garis|garisan)\s+(padat|pejal)\b,WATCH,kotak penuh / garis penuh,"""padat/pejal"" mean dense or not hollow; a solid box or line is ""penuh"""
 \b(sheet|fail|data|akaun|dokumen|maklumat)\s+peribadi\b,WATCH,… persendirian,"""peribadi"" = personal; ""persendirian"" = private (not public)"
 \byang\s+\S+(\s+\S+)?\s+yang\b,WATCH,restructure,two "yang" within a few words usually marks a calqued relative clause
 \b(atau|dan|untuk|boleh|sila)\s+jeda\b,WATCH,jedakan,"""jeda"" is a noun; as a verb in a sentence it takes -kan"

@@ -12,9 +12,9 @@ Existing open-source pieces each cover one layer — MT models (Mesolitica nanot
 
 In scope, in order of delivery:
 
-1. **`bml lint`** — mechanical checks on EN/MS string files against a project termbase and a pattern list, producing a FIX / WATCH / INFO report. *(v0.1, this release)*
-2. **`bml draft`** — produce a first Malay draft through a pluggable backend (Claude API with the `terjemah-bm-dbp` authoring prompt and termbase injection; or a local Mesolitica model), always passed through `lint` before a human sees it. *(later)*
-3. **`bml eval`** — score a draft against a gold set of author-corrected strings (chrF / COMET where available, lint pass-rate, and a human A/B "written vs translated" protocol). *(later)*
+1. **`bml lint`** — mechanical checks on EN/MS string files against a project termbase and a pattern list, producing a FIX / WATCH / INFO report. *(v0.1.0)* Run as a **GitHub Action** on every pull request, with the report on the run's Summary page, because the author works in the browser and merges pull requests rather than running commands. *(v0.1.1)*
+2. **`bml draft`** — a first Malay draft through a pluggable backend. *Open (§9 Q4): drafts already come from Claude sessions using the `terjemah-bm-dbp` skill; a separate backend may add cost without helping the author.*
+3. **`bml eval`** — score a draft against a gold set of author-corrected strings (chrF / COMET where available, lint pass-rate, and a human A/B "written vs translated" protocol). *(later, once the gold set is reviewed)*
 
 Non-goals: training an MT model; storing or redistributing dictionary content from PRPM; deciding taste questions (register, idiom beyond the pattern list) automatically.
 
@@ -33,9 +33,13 @@ Non-goals: training an MT model; storing or redistributing dictionary content fr
 |---|---|---|
 | `.json` `{en:{…}, ms:{…}}`, nested keys, or flat `{key:{en,ms}}`, or `[{term,en,ms}]` | `json` | keys flattened with `.` |
 | `.js` script or ESM module declaring an object with `en`/`ms` blocks or a glossary array | `js-table` | evaluated in a `node:vm` sandbox with no host access; functions and side effects ignored; ESM syntax stripped |
-| `.js` with inline `L("en", "ms")` calls (call name configurable) | `js-inline` | regex extraction; template literals kept verbatim |
+| `.js` with inline `L("en", "ms")` calls (several helper names: `--call L,LL`) | `js-inline` | regex extraction; template literals kept verbatim |
+| `.js` objects with `en`/`ms` at any depth, scripts that assign `window.X` / `root.X` in an IIFE | `js-table` | deep walk over top-level bindings, exports and new globals *(v0.1.1)* |
+| `.js` tables holding Malay only | `js-ms-only` | every string leaf becomes a row with `en = null`; only Malay-side rules apply *(v0.1.1)* |
 
-Out of scope for v0.1: ARB, PO, `.strings`, XLIFF (planned; each is a small loader).
+A script that throws while loading still yields what it defined before the error, plus literal `en: '…', ms: '…'` pairs read by pattern, and the report lists a loader note. Report paths are relative to the working directory, so GitHub annotations land on the right file.
+
+Out of scope so far: ARB, PO, `.strings`, XLIFF, and whatever Lab S2's build uses (§9 Q3).
 
 ## 5. Rules (v0.1)
 
@@ -59,6 +63,8 @@ Out of scope for v0.1: ARB, PO, `.strings`, XLIFF (planned; each is a small load
 
 `termbase.csv`: `en, bm, tier, reject, status, source, note`. `reject` holds forms the project has rejected (`|`-separated). `status` ∈ checked / unchecked / n/a. `source` is the PRPM (or other) URL that supports the `bm` choice. A capitalised `en` matches case-sensitively (so `Level` the game term does not match "six levels").
 
+Several allowed renderings go in `bm` separated by `|` (`impact|impak ekonomi`): a tier-2 term counts as kept if the term or any listed rendering appears, also inside a longer kept phrase. Before matching words, placeholders (`{x}`, `${…}`, `%s`, tags) are blanked as a number-like token and kept-English multi-word phrases are blanked, so `{team}` is not the word *team* and *Room* in *Deal Room* is not the bare word *Room*. *(v0.1.1)*
+
 `patterns.csv`: `pattern, level, suggest, note, flags`. `pattern` is a JS regex body; flags default to `i`; `-` means case-sensitive. The shipped list is generic Malaysian Malay; a project adds its own file or rows.
 
 ## 7. Report
@@ -67,11 +73,15 @@ Markdown (default) or JSON. Markdown lists FIX, WATCH and INFO in that order, on
 
 ## 8. Validation
 
-- `node --test`: 14 tests on fixtures that reproduce each rule's positive and the known false positives (`Game Master` vs label `Game`; `penanda aras` vs rejected `aras`; `keluar` vs `ke luar`).
-- Field run on IMPAK v0.6: 442 pairs → FIX 11 · WATCH 35 · INFO 13. Against the manual audit's 11 FIX items, 9 are reported; the two misses need grammar, not pattern matching (`digunakan build ini`) or taste. The run also surfaced one inconsistency the manual audit missed: medal labels translated `Emas/Perak/Gangsa` in `game.js` while 13 prose strings say `Gold/Silver/Bronze`.
-- Gold set: `eval/gold/impak-v0.6.jsonl` — 23 author-reviewed pairs (before/after, category, rule) seeded from the audit; the first data for `bml eval`.
+- `node --test`: 25 tests on fixtures that reproduce each rule's positive case and the false positives met in the field (`Game Master` vs label `Game`; `penanda aras` vs rejected `aras`; `keluar` vs `ke luar`; `{team}`; *Room* in *Deal Room*; *Take* in *Take-home*; `L("s", "")`; a term next to an HTML tag).
+- IMPAK, 5 Nov code (442 pairs in 4 files): FIX 11 · WATCH 35 · INFO 13; 9 of the manual audit's 11 FIX items reported, plus the medal-label inconsistency the audit missed. **That run used a stale clone**; the author had already fixed these items in his 6–7 Nov pass.
+- IMPAK, main `badb3bd`, 8 Nov (1,578 strings in 11 files, 106 Malay-only), termbase taken from the author's `content/glossary-bm.md`, R03 off: **FIX 0 · WATCH 20 · INFO 14**. Each WATCH is a real decision (e.g. *University-linked → berkait universiti* in 9 strings against the rule that *linked* stays English). Before tuning, the same run gave FIX 15 · WATCH 65, all extra findings being false positives of the rules, now covered by tests.
+- These figures are in-sample: the loader and rules were tuned on IMPAK. A second project (§9 Q3) is the out-of-sample test.
+- Gold set: `eval/gold/impak-v0.6.jsonl` — 23 pairs seeded from the audit; on 8 Nov, 15 settled in main by the author, 8 open. The author answers them in the review page; only answered rows count as gold.
 
 ## 9. Open decisions (for the author)
+
+*The author answers these in the review page "IMPAK BM review" (8 Nov 2026), where each question carries the evidence from the IMPAK runs and an updated recommendation: R03 off by default; R09 stays FIX; the next loader follows Lab S2; no `bml draft` for now; keep the capitalisation convention.*
 
 1. Does R03 (length) earn its place, or is it noise in practice? Default thresholds were loosened once already.
 2. Should R09 be WATCH rather than FIX when the English label is also a glossary term (medals)?

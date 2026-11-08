@@ -12,7 +12,7 @@ const LEVEL_ORDER = { FIX: 0, WATCH: 1, INFO: 2 };
  * options: { termbase, patterns, langs, callName, rules: ['R01', ...], ignore: ['R03'], ...rule options }
  */
 export async function lint(paths, options = {}) {
-  const rows = await loadFiles(paths, { langs: options.langs, callName: options.callName });
+  const rows = await loadFiles(paths, { langs: options.langs, callName: options.callName, relativeTo: options.relativeTo });
   const terms = options.termbase ? await loadTermbase(options.termbase) : [];
   const patterns = options.patterns ? await loadPatterns(options.patterns) : [];
   const ctx = { terms, patterns, options };
@@ -22,7 +22,7 @@ export async function lint(paths, options = {}) {
   const ignore = new Set(options.ignore || []);
   findings = findings.filter(f => (!only || only.has(f.rule)) && !ignore.has(f.rule));
   findings.sort((a, b) => LEVEL_ORDER[a.level] - LEVEL_ORDER[b.level] || a.rule.localeCompare(b.rule) || String(a.file).localeCompare(String(b.file)) || String(a.key).localeCompare(String(b.key)));
-  const summary = { rows: rows.length, files: [...new Set(rows.map(r => r.file))], FIX: 0, WATCH: 0, INFO: 0, byRule: {} };
+  const summary = { rows: rows.length, msOnly: rows.filter(r => r.en == null).length, files: [...new Set(rows.map(r => r.file))], warnings: rows.warnings || [], FIX: 0, WATCH: 0, INFO: 0, byRule: {} };
   for (const f of findings) { summary[f.level]++; summary.byRule[f.rule] = (summary.byRule[f.rule] || 0) + 1; }
   return { rows, findings, summary, terms, patterns };
 }
@@ -32,8 +32,9 @@ const clip = (s, n = 110) => { s = cell(s); return s.length > n ? s.slice(0, n -
 
 export function toMarkdown(result, { title = 'bm-lint report', showInfo = true } = {}) {
   const { findings, summary } = result;
-  const lines = [`# ${title}`, '', `${summary.rows} string pairs in ${summary.files.length} file(s): ${summary.files.join(', ')}.`, '',
+  const lines = [`# ${title}`, '', `${summary.rows} strings in ${summary.files.length} file(s)${summary.msOnly ? ` (${summary.msOnly} of them Malay-only, checked on the Malay side alone)` : ''}: ${summary.files.join(', ')}.`, '',
     `**FIX ${summary.FIX} · WATCH ${summary.WATCH} · INFO ${summary.INFO}**`, ''];
+  if (summary.warnings.length) lines.push('Loader notes:', ...summary.warnings.map(w => `- ${w}`), '');
   const byRule = Object.entries(summary.byRule).sort().map(([r, n]) => `${r} ${n}`).join(' · ');
   if (byRule) lines.push(`By rule: ${byRule}`, '');
   for (const level of ['FIX', 'WATCH', 'INFO']) {

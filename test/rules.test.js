@@ -98,3 +98,106 @@ test('extractInline handles single quotes and custom call names', () => {
   assert.equal(rows.length, 2);
   assert.equal(rows[0].ms, 'Helo');
 });
+
+test('loader: nested en/ms blocks assigned to window', async () => {
+  const rows = await loadFile(fx('lessons.js'));
+  assert.deepEqual(rows.map(r => r.key).sort(), ['LESSONS.contractor.principle', 'LESSONS.contractor.watch']);
+  assert.equal(rows.find(r => r.key.endsWith('watch')).ms, 'Penghunian tahun depan.');
+});
+
+test('loader: IIFE that assigns root.X is harvested', async () => {
+  const rows = await loadFile(fx('moves-iife.js'));
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].ms, 'Berkembang secara berfasa');
+});
+
+test('loader: Malay-only table yields en = null rows; Malay-side rules still run', async () => {
+  const rows = await loadFile(fx('ms-only.js'));
+  assert.ok(rows.length >= 3 && rows.every(r => r.en === null));
+  const res = await lint([fx('ms-only.js')], { patterns: join(here, '..', 'termbase', 'patterns.csv') });
+  assert.ok(res.findings.some(f => f.rule === 'R12' && /bisa/.test(f.msg)));
+  assert.ok(res.findings.some(f => f.rule === 'R05' && /place word/.test(f.msg)) === false); // "di sini" is correct
+  assert.equal(res.findings.filter(f => f.rule === 'R02').length, 0);                        // no EN, so not "missing"
+});
+
+test('loader: a script that throws on load still gives its literal en/ms pairs, with a note', async () => {
+  const rows = await loadFile(fx('throws.js'));
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].ms, 'Penghunian sekarang');
+  assert.match(rows.warning, /evaluation stopped early/);
+});
+
+test('loader: several inline helper names; unrelated two-string calls ignored', async () => {
+  const rows = await loadFile(fx('two-helpers.js'), { callName: 'L,LL' });
+  assert.deepEqual(rows.map(r => r.ms), ['Tetapan', 'Fasa 2 · Kembang']);
+});
+
+test('R10: a rejected word inside a placeholder or a kept-English phrase is not a hit', async () => {
+  const { r10_termbase } = await import('../src/rules.js');
+  const terms = [
+    { en: 'team', bm: 'pasukan', tier: 1, reject: ['team'], status: 'n/a', source: '', note: '' },
+    { en: 'Park Management Team', bm: 'Park Management Team', tier: 2, reject: [], status: 'n/a', source: '', note: '' },
+    { en: 'Room', bm: 'Bilik', tier: 1, reject: [], status: 'n/a', source: '', note: '' },
+    { en: 'Deal Room', bm: 'Deal Room', tier: 2, reject: [], status: 'n/a', source: '', note: '' },
+  ];
+  const rows = [
+    { file: 'x', key: 'a', en: 'Back to the session · Room {room} · {team}', ms: 'Kembali ke sesi · Bilik {room} · {team}' },
+    { file: 'x', key: 'b', en: 'Park Management Team adds one action point.', ms: 'Park Management Team memberi satu action point.' },
+    { file: 'x', key: 'c', en: 'Open the Deal Room card.', ms: 'Buka kad Deal Room.' },
+    { file: 'x', key: 'd', en: 'Join your team.', ms: 'Sertai team anda.' },
+  ];
+  const f = r10_termbase(rows, { terms, options: {} });
+  assert.deepEqual(f.filter(x => x.level !== 'INFO').map(x => `${x.key}:${x.level}`), ['d:FIX']);
+});
+
+test('R02 ignores a plural suffix or an empty pair; R01 ignores plural-s ternaries', async () => {
+  const { r02_missing, r01_placeholders } = await import('../src/rules.js');
+  const rows = [
+    { file: 'x', key: 's', en: 's', ms: '' },
+    { file: 'x', key: 'e', en: '', ms: '' },
+    { file: 'x', key: 'm', en: 'Missing text', ms: '' },
+    { file: 'x', key: 't', en: 'You have ${n} point${n > 1 ? "s" : ""}.', ms: 'Anda ada ${n} point.' },
+  ];
+  assert.deepEqual(r02_missing(rows).map(f => f.key), ['m']);
+  assert.equal(r01_placeholders(rows).length, 0);
+});
+
+test('R10 tier 2: a term kept inside a longer phrase counts as kept; allowed alternatives pass', async () => {
+  const { r10_termbase } = await import('../src/rules.js');
+  const terms = [
+    { en: 'fund', bm: 'fund', tier: 2, reject: [], status: 'n/a', source: '', note: '' },
+    { en: 'Development Fund', bm: 'Development Fund', tier: 2, reject: [], status: 'n/a', source: '', note: '' },
+    { en: 'impact', bm: 'impact|impak ekonomi', tier: 2, reject: [], status: 'n/a', source: '', note: '' },
+  ];
+  const rows = [
+    { file: 'x', key: 'a', en: 'The fund has closed.', ms: 'Development Fund sudah ditutup.' },
+    { file: 'x', key: 'b', en: 'Economic impact, Cr/yr', ms: 'Impak ekonomi, Cr/thn' },
+    { file: 'x', key: 'c', en: 'Spend the fund before month 24.', ms: 'Belanjakan dana sebelum bulan 24.' },
+  ];
+  assert.deepEqual(r10_termbase(rows, { terms, options: {} }).map(f => f.key), ['c']);
+});
+
+test('R09: "Take" in "Take-home points" is not a label head; "Room" inside "Deal Room" is not a bare label', async () => {
+  const { r09_control_names } = await import('../src/rules.js');
+  const terms = [{ en: 'Deal Room', bm: 'Deal Room', tier: 2, reject: [], status: 'n/a', source: '', note: '' }];
+  const rows = [
+    { file: 'x', key: 'lbl1', en: 'Take-home points', ms: 'Perkara utama untuk dibawa pulang' },
+    { file: 'x', key: 'lbl2', en: 'Room', ms: 'Bilik' },
+    { file: 'x', key: 'p1', en: 'Leave is safe but Take or Conditions can pay when the checks are met.', ms: 'Leave memang selamat tetapi Take atau Conditions boleh berbaloi apabila semakan dipenuhi.' },
+    { file: 'x', key: 'p2', en: 'Decide the card in the Deal Room before the month ends.', ms: 'Putuskan kad dalam Deal Room sebelum bulan tamat.' },
+  ];
+  assert.equal(r09_control_names(rows, { terms, options: {} }).length, 0);
+});
+
+test('masking keeps word boundaries: a term next to an HTML tag still matches', async () => {
+  const { r10_termbase } = await import('../src/rules.js');
+  const terms = [{ en: 'park', bm: 'park', tier: 2, reject: [], status: 'n/a', source: '', note: '' }];
+  const rows = [{ file: 'x', key: 'h', en: '<h4>What the park score measures</h4>', ms: '<h4>Apa yang diukur oleh skor park</h4>' }];
+  assert.equal(r10_termbase(rows, { terms, options: {} }).length, 0);
+});
+
+test('R05 suggestion quotes the original placeholder, not the mask', async () => {
+  const r = await run();
+  const f = find(r, 'R05', 'files.n')[0];
+  assert.equal(f.suggest, '"{n} fail"');
+});

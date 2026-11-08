@@ -31,3 +31,23 @@ Decided by: AI proposal from the audit categories the author accepted on 2026-11
 Decision: `Level` matches only "Level"; `phase` matches "Phase" and "phase".
 Rationale: separates a product term from the same word used as a common noun ("up to six levels") without a new column. Open: replace with an explicit `match` column (DESIGN.md §9.5).
 Decided by: AI, after a false positive on the IMPAK glossary; author to confirm.
+
+## 2026-11-08 The check runs as a GitHub Action; the CLI is secondary
+Decision: ship a composite action (`action.yml`) that runs `bml lint` on pull requests, writes the report to the run's Summary page, annotates the changed files and fails on FIX.
+Rationale: the author works in Chrome and merges pull requests that Claude opens (recorded in rz-tnl-app-template v1.5); a CLI he must run in a terminal gives him nothing. The v0.1.0 README assumed a terminal, which was a mistake.
+Decided by: AI, from the author's recorded working mode; author to confirm by merging the IMPAK pull request.
+
+## 2026-11-08 Pin the action by commit SHA
+Decision: workflows use `RazinUTM/bm-l10n@<commit-sha>`; release tags are optional and created by the author in the browser (Releases → Draft a new release).
+Rationale: pushing tags from the Claude session is refused by the session's proxy (HTTP 403, a policy, not retried); a SHA is immutable, so a change to bm-l10n reaches an app only through that app's own pull request.
+Decided by: AI.
+
+## 2026-11-08 The IMPAK example follows the author's glossary, and the stale report is withdrawn
+Decision: `examples/impak/termbase.csv` is transcribed from IMPAK's `content/glossary-bm.md` (decided by the author on 6 Nov); the report is regenerated on main `badb3bd`.
+Rationale: the v0.1.0 example was seeded from the 5 Nov audit and linted a stale clone; the author had meanwhile decided several terms differently (benchmark kept in English, *ada services*, *membuka hutan*, *kotak penuh*). The author's glossary outranks an audit.
+Decided by: AI, correcting its own v0.1.0 example.
+
+## 2026-11-08 Matching rules after the IMPAK main run
+Decision: blank placeholders and kept-English phrases before matching words; count a tier-2 term as kept wherever it appears in the Malay; allow several renderings in `bm` with `|`; ignore an empty Malay string when the English has no word (`L("s", "")`); ignore English plural-suffix template expressions in R01; split label heads only on spaced hyphens.
+Rationale: each change removes a class of false positive seen on IMPAK main (FIX 15 → 0 with no real finding lost); each has a regression test.
+Decided by: AI; author to confirm by reviewing the remaining 20 WATCH findings.

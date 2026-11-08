@@ -14,7 +14,7 @@
 //   --out <file>       write the report to a file instead of stdout
 //   --rules R01,R09    run only these rules
 //   --ignore R03,R11   skip these rules
-//   --call L           name of the inline call to extract (default L)
+//   --call L,LL        names of the inline bilingual helpers to extract (default L)
 //   --langs en,ms      language keys in the tables (default en,ms)
 //   --casual           allow casual pronouns (persona voice)
 //   --no-fail          exit 0 even when FIX findings exist
@@ -60,6 +60,7 @@ async function main() {
       rules: o.rules ? o.rules.split(',') : [],
       ignore: o.ignore ? o.ignore.split(',') : [],
       allowCasualPronouns: !!o.allowCasualPronouns,
+      relativeTo: process.cwd(),
     });
     const text = o.format === 'json' ? toJSON(result) : toMarkdown(result, { title: `bm-lint report — ${o._.join(', ')}`, showInfo: !o.quiet });
     if (o.out) { await writeFile(o.out, text, 'utf8'); console.error(`wrote ${o.out}  (FIX ${result.summary.FIX} · WATCH ${result.summary.WATCH} · INFO ${result.summary.INFO})`); }
@@ -79,7 +80,7 @@ async function main() {
     console.log(`# ${todo.length} termbase entries to check against PRPM.`);
     console.log('# Look each one up (one page at a time: PRPM rate-limits parallel fetches), then set status=checked and source=<URL>.');
     console.log('# With the prpm-dbp CLI installed:  npx prpm-dbp lookup <word>   (caches locally; keeps DBP content out of this repo)\n');
-    for (const t of todo) console.log(`${t.en.padEnd(26)} ${t.bm.padEnd(26)} https://prpm.dbp.gov.my/Cari1?keyword=${encodeURIComponent(t.bm.split(' ')[0])}`);
+    for (const t of todo) { const w = t.bm.split('|')[0].trim(); console.log(`${t.en.padEnd(26)} ${w.padEnd(26)} https://prpm.dbp.gov.my/Cari1?keyword=${encodeURIComponent(w.split(' ')[0])}`); }
     return;
   }
   usage(1);
