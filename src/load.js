@@ -10,7 +10,7 @@
 //               node:vm sandbox with no access to the host, so it can be any
 //               hand-written JS; functions and side effects are ignored.
 //   .js (inline) calls of the form L("english", "malay") anywhere in the source, including strings
-//               built by concatenation (L("Score " + c, "Skor " + c) -> "Score {e1}" / "Skor {e1}").
+//               built by concatenation (L("Score " + c, "Skor " + c) -> "Score ${e1}" / "Skor ${e1}").
 //               The call names are configurable (default L; e.g. "L,LL"); "tx:1" skips one leading
 //               argument, for helpers such as tx(element, en, ms).
 //   .js (ms-only) a table that holds Malay text only (e.g. translations of engine output whose
@@ -104,7 +104,7 @@ function harvestLeaves(file, values, maxDepth = 6) {
 }
 
 /** Properties  en: …, ms: …  (same object, en first) read from the source, for scripts that cannot be
- *  evaluated. Strings built by concatenation are read with {eN} placeholders. */
+ *  evaluated. Strings built by concatenation are read as template literals (${eN}). */
 export function extractPairs(file, src, langs = ['en', 'ms']) {
   return extractObjectPairs(file, src, langs);
 }

@@ -144,10 +144,14 @@ export function readArg(src, mask, range) {
   return ops.some(o => o.kind !== 'expr') ? ops : null;
 }
 
-/** Render two operand lists with shared placeholder numbers: same expression, same {eN}. */
+/** Render two operand lists as the equivalent template literals: "Score " + c  ->  "Score ${e1}".
+ *  A concatenation is a template literal written another way, so the rules treat its expressions
+ *  as they treat ${…} (R01 compares their number, not their names: a localised expression such as
+ *  item.en / item.ms legitimately differs by side). The same expression gets the same number on
+ *  both sides, so the author can see which part corresponds to which. */
 export function renderPair(a, b) {
   const ids = new Map();
-  const id = k => { if (!ids.has(k)) ids.set(k, ids.size + 1); return `{e${ids.get(k)}}`; };
+  const id = k => { if (!ids.has(k)) ids.set(k, ids.size + 1); return '${e' + ids.get(k) + '}'; };
   const render = ops => ops.map(o => (o.kind === 'expr' ? id(o.key) : o.text)).join('');
   return [render(a), render(b)];
 }

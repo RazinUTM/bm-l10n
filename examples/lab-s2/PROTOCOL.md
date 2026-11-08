@@ -38,10 +38,14 @@ results:
    inside another `en`/`ms` element are part of it, not separate rows. Attribute pairs
    `data-…-en` / `data-…-ms` on one element are read too. `<script>`, `<style>` and comments
    are skipped.
-2. **JS helper calls with built strings**: `L2("…" + n + "…", "…" + n + "…")` is read with
-   each non-literal operand replaced by a placeholder `{eN}`, numbered by the expression's
-   text with its string literals blanked, so the same expression gets the same number on both
-   sides. `name:k` skips `k` leading arguments (`tx:1` for `tx(el, en, ms)`). Calls whose
+2. **JS helper calls with built strings**: `L2("…" + n + "…", "…" + n + "…")` is read as the
+   equivalent template literal, each non-literal operand becoming `${eN}`, numbered by the
+   expression's text with its string literals blanked, so the same expression gets the same
+   number on both sides. *(Amended before the run: the first version used `{eN}`; the IMPAK
+   regression check showed that a localised expression such as `item.en` / `item.ms` then
+   reads as a placeholder error, while the rules already treat `${…}` as template expressions
+   whose names may differ by side. A concatenation is a template literal written another way,
+   so `${eN}` is the faithful form.)* `name:k` skips `k` leading arguments (`tx:1` for `tx(el, en, ms)`). Calls whose
    arguments are `{…}[key]` maps or `[…][i]` arrays of the same shape are paired element by
    element. `en: <expr>, ms: <expr>` object properties are read the same way.
 3. **Pair arrays** (opt-in, `--pair-arrays`): a two-element array of string literals is read
@@ -59,6 +63,9 @@ results:
   termbase (Lab S2 has none), default rules (R03 off). This is what a new user gets on day
   one; R10 and R13 need a termbase and are therefore not tested here.
 - Loader commit *(filled before the run)*: see the report.
+- IMPAK regression with the new loader (branch `bm-lint-termbase` @ `4a8bcf8`): every v0.1.2
+  finding is unchanged; 65 more strings are read (built strings), and they add one WATCH
+  (*fund lapsed* → *dana … luput*, R10, a real decision for the author).
 - Rows read per file against marker counts *(filled before the run)*: see the report.
 
 ## Labels

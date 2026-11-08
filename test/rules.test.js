@@ -272,9 +272,9 @@ test('JS loader reads built strings, skipped arguments, indexed literals and pai
   const rows = await loadFile(fx('built-strings.js'), { callName: 'L2,tx:1', pairArrays: true });
   const by = s => rows.find(r => (r.en || '').startsWith(s));
   assert.equal(by('Correct.').ms, 'Betul.');
-  assert.deepEqual([by('Score').en, by('Score').ms], ['Score {e1} / {e2} answered', 'Skor {e1} / {e2} dijawab']);
+  assert.deepEqual([by('Score').en, by('Score').ms], ['Score ${e1} / ${e2} answered', 'Skor ${e1} / ${e2} dijawab']);
   assert.equal(by(' · time ').ms, ' · masa ');                           // a call nested in another expression
-  assert.deepEqual([by('{e1} of 8').en, by('{e1} of 8').ms], ['{e1} of 8 sections read', 'Bahagian dibaca: {e1} daripada 8']);
+  assert.deepEqual([by('${e1} of 8').en, by('${e1} of 8').ms], ['${e1} of 8 sections read', 'Bahagian dibaca: ${e1} daripada 8']);
   assert.equal(by('The PDF').ms, 'PDF tidak dapat disimpan di sini.');
   assert.equal(by('Theme: dark').ms, 'Tema: gelap');
   assert.equal(by('(b) load on CD').ms, '(b) load pada CD');
@@ -282,10 +282,10 @@ test('JS loader reads built strings, skipped arguments, indexed literals and pai
   assert.equal(by('The mass').ms, 'Jisim berada di halt 5. Yang mana benar?');
   assert.equal(by('it doubles').ms, 'ia berganda');
   assert.equal(rows.some(r => r.en === 'R_A' || r.en === 'R_C'), false);  // symbol pairs are not language pairs
-  assert.deepEqual([by('Lab ·').en, by('Lab ·').ms], ['Lab · checklist ({e1} of 7 items)', 'Makmal · senarai semak ({e1} daripada 7 item)']);
+  assert.deepEqual([by('Lab ·').en, by('Lab ·').ms], ['Lab · checklist (${e1} of 7 items)', 'Makmal · senarai semak (${e1} daripada 7 item)']);
   const sum = by('Sum =');
-  assert.equal(sum.en, "Sum = <b class='num'>{e1} kgf</b> against {e2} kgf ({e3})");
-  assert.equal(sum.ms, "Jumlah = <b class='num'>{e1} kgf</b> berbanding {e2} kgf ({e3})");  // ternaries with different text share a number
+  assert.equal(sum.en, "Sum = <b class='num'>${e1} kgf</b> against ${e2} kgf (${e3})");
+  assert.equal(sum.ms, "Jumlah = <b class='num'>${e1} kgf</b> berbanding ${e2} kgf (${e3})");  // ternaries with different text share a number
   assert.equal(by('R = 0.5').en, 'R = 0.5 w');                       // \u escapes decoded
   assert.equal(rows.some(r => /data-en/.test(r.en || '')), false);
   assert.match(rows.warning, /12 helper call\(s\): 10 read, 1 with variables only, 1 not read \(.*line 11\)/);    // L2(el.getAttribute(...), ...) is dynamic
@@ -294,4 +294,12 @@ test('JS loader reads built strings, skipped arguments, indexed literals and pai
 test('pair arrays are off unless asked for', async () => {
   const rows = await loadFile(fx('built-strings.js'), { callName: 'L2,tx:1' });
   assert.equal(rows.some(r => r.en === 'it doubles'), false);
+});
+
+test('built strings with a localised expression on each side are not a placeholder error', async () => {
+  const { r01_placeholders } = await import('../src/rules.js');
+  const rows = extractInline('x.js', 'L(item.en + " ordered in Zone " + z + ".", item.ms + " diarahkan di Zon " + z + ".")', 'L');
+  assert.equal(rows[0].en, '${e1} ordered in Zone ${e2}.');
+  assert.equal(rows[0].ms, '${e3} diarahkan di Zon ${e2}.');
+  assert.deepEqual(r01_placeholders(rows), []);
 });
