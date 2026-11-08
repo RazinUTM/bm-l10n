@@ -1,0 +1,111 @@
+{
+ "protocol": "PROTOCOL.md",
+ "sample": "sample-80.json (Python random.Random(20261108).sample over 756 rows in code-point order of (file, key))",
+ "auditor": "Claude (Claude Opus 5.5), terjemah-bm-dbp audit procedure, before run 1 was read",
+ "audited_on": "2026-11-08",
+ "rows_audited": 80,
+ "rows_with_issues": 9,
+ "notes": "Only issues an editor would change are listed. Technical terms kept in English (load, beam, support, hinge, influence line, error, axle, equilibrium, Worked example) follow the author's rule and are not issues. The other 71 rows read as written in Malay.",
+ "issues": [
+  {
+   "n": 15,
+   "level": "WATCH",
+   "kind": "mechanical",
+   "problem": "\"Full screen\" and \"browser\" kept in English in a UI message; both have established ms-MY UI words (skrin penuh, pelayar). Consistent across the app (3 and 2 strings), so a project decision.",
+   "suggest": "Skrin penuh tidak tersedia di sini; gunakan mod skrin penuh pelayar anda.",
+   "file": "app.js",
+   "key": "tx@358#29",
+   "en": "Full screen is not available here; use your browser's full-screen mode.",
+   "ms": "Full screen tidak tersedia di sini; guna mod full screen browser anda."
+  },
+  {
+   "n": 16,
+   "level": "WATCH",
+   "kind": "taste",
+   "problem": "\"kurang pasti atau teka\": the bare root teka where the verb form is needed (guessing = meneka).",
+   "suggest": "kurang pasti atau meneka",
+   "file": "app.js",
+   "key": "tx@573#58",
+   "en": "Confidence at first check: sure and fully right ${e1}, sure but not fully right ${e2}, unsure or guessing but fully right ${e3}, unsure or guessing and not fully right ${e4}.",
+   "ms": "Keyakinan pada semakan pertama: yakin dan betul sepenuhnya ${e1}, yakin tetapi tidak betul sepenuhnya ${e2}, kurang pasti atau teka tetapi betul sepenuhnya ${e3}, kurang pasti atau teka dan tidak betul sepenuhnya ${e4}."
+  },
+  {
+   "n": 24,
+   "level": "WATCH",
+   "kind": "taste",
+   "problem": "\"Section\" (a section of the notes, everyday sense) kept in English; the structural sense (the section where V or M is read) rightly stays English, but this one is the everyday word. Bahagian is already used for the five parts, so a project decision.",
+   "suggest": "Bahagian sudah dibaca (or keep section and record it)",
+   "file": "p1_start_notes.html",
+   "key": "n4/span@270#154",
+   "en": "Section read",
+   "ms": "Section sudah dibaca"
+  },
+  {
+   "n": 26,
+   "level": "WATCH",
+   "kind": "mechanical",
+   "problem": "\"di halt 2, di mana η_A = 0.2\": di mana as a relative word is a calque of where; DBP Khidmat Nasihat says di mana is for questions only (use yang, tempat or iaitu). The same construction appears in about 14 strings across the app.",
+   "suggest": "di halt 2, iaitu η_A = 0.2, … / pada halt 2 yang η_A-nya 0.2",
+   "evidence": "https://prpm.dbp.gov.my/Cari1?d=175768&keyword=sebagai+mana (Khidmat Nasihat 14.07.2017); https://prpm.dbp.gov.my/Cari1?d=175768&keyword=susulan (12.08.2010)",
+   "file": "p1_start_notes.html",
+   "key": "n6/p@321#188",
+   "en": "<b>How to compare.</b> Report the difference \\(\\eta_{\\text{test}}-\\eta_{\\text{theory}}\\) at every halt. A percentage difference is meaningful only where the theoretical ordinate is not small: at halt 2, where \\(\\eta_A = 0.2\\), a gauge error of one division (0.02 per unit load) is already 10 %, and where the theoretical value is zero the percentage is undefined. Judge the agreement by the absolute difference and by the shape of the line.",
+   "ms": "<b>Cara membandingkan.</b> Laporkan perbezaan \\(\\eta_{\\text{test}}-\\eta_{\\text{theory}}\\) pada setiap halt. Perbezaan peratusan hanya bermakna apabila ordinate teori tidak kecil: di halt 2, di mana \\(\\eta_A = 0.2\\), error gauge satu division (0.02 per unit load) sudah 10 %, dan apabila nilai teori sifar, peratusan tidak tertakrif. Nilai persetujuan berdasarkan perbezaan mutlak dan bentuk garis."
+  },
+  {
+   "n": 30,
+   "level": "WATCH",
+   "kind": "taste",
+   "problem": "\"berlaku dengan satu load pada vertex\": calque of occurs with; the condition reads as an instrument.",
+   "suggest": "berlaku apabila satu load berada pada vertex",
+   "file": "p1_start_notes.html",
+   "key": "n9/span@374#230",
+   "en": "The extreme of a load train occurs with one load on a vertex.",
+   "ms": "Nilai ekstrem load train berlaku dengan satu load pada vertex."
+  },
+  {
+   "n": 39,
+   "level": "WATCH",
+   "kind": "taste",
+   "problem": "\"pada setiap 17 halt\" can be read as every 17th halt.",
+   "suggest": "pada setiap satu daripada 17 halt / pada kesemua 17 halt",
+   "file": "p2_slides.html",
+   "key": "deck/span@145#81",
+   "en": "2.5 kg at each of 17 halts, read all six gauges.",
+   "ms": "2.5 kg pada setiap 17 halt, baca keenam-enam gauge."
+  },
+  {
+   "n": 42,
+   "level": "WATCH",
+   "kind": "taste",
+   "problem": "\"Bandingkan dengan perbezaan mutlak\" reads as compare with the absolute difference; the notes say the same thing with berdasarkan.",
+   "suggest": "Bandingkan berdasarkan perbezaan mutlak",
+   "file": "p2_slides.html",
+   "key": "deck/span@153#93",
+   "en": "±0.03 is 3 % of the ordinate at A but 15 % at halt 2, and undefined where the ordinate is zero. Compare by <b>absolute difference</b>.",
+   "ms": "±0.03 ialah 3 % daripada ordinate di A tetapi 15 % di halt 2, dan tidak tertakrif apabila ordinate sifar. Bandingkan dengan <b>perbezaan mutlak</b>."
+  },
+  {
+   "n": 75,
+   "level": "WATCH",
+   "kind": "mechanical",
+   "problem": "\"page\" (everyday word) kept in English; halaman never used. Consistent across the app (3 strings), so a project decision.",
+   "suggest": "pada halaman ini",
+   "file": "p3_explorer_ex_lab.html",
+   "key": "v-glossary/span@300#227",
+   "en": "Symbols, units and terms used on this page.",
+   "ms": "Simbol, unit dan istilah yang digunakan pada page ini."
+  },
+  {
+   "n": 79,
+   "level": "WATCH",
+   "kind": "mechanical",
+   "problem": "\"load didarab jarak … dibahagi span\": Malay arithmetic takes dengan (didarab dengan, dibahagi dengan); without it the phrase is a calque of times / divided by.",
+   "suggest": "load didarab dengan jarak ke support yang satu lagi, kemudian dibahagi dengan span",
+   "file": "p3_explorer_ex_lab.html",
+   "key": "v-glossary/span@332#256",
+   "en": "For a simple span, each reaction equals the load times the distance to the other support, divided by the span.",
+   "ms": "Bagi simple span, setiap reaction sama dengan load didarab jarak ke support yang satu lagi, dibahagi span."
+  }
+ ]
+}

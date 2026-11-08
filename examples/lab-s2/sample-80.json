@@ -1,0 +1,642 @@
+[
+ {
+  "n": 1,
+  "row": 0,
+  "file": "app.js",
+  "key": "L2@148#5",
+  "en": "Influence line for ",
+  "ms": "Influence line bagi "
+ },
+ {
+  "n": 2,
+  "row": 3,
+  "file": "app.js",
+  "key": "L2@184#8",
+  "en": "(b) load on CD",
+  "ms": "(b) load pada CD"
+ },
+ {
+  "n": 3,
+  "row": 4,
+  "file": "app.js",
+  "key": "L2@191#9",
+  "en": "(c) ABC carrying ",
+  "ms": "(c) ABC membawa "
+ },
+ {
+  "n": 4,
+  "row": 9,
+  "file": "app.js",
+  "key": "L2@202#14",
+  "en": "vertical force only",
+  "ms": "daya menegak sahaja"
+ },
+ {
+  "n": 5,
+  "row": 13,
+  "file": "app.js",
+  "key": "L2@203#18",
+  "en": "no moment: M = 0",
+  "ms": "tiada moment: M = 0"
+ },
+ {
+  "n": 6,
+  "row": 15,
+  "file": "app.js",
+  "key": "L2@220#20.0",
+  "en": "(a) load on ABC",
+  "ms": "(a) load pada ABC"
+ },
+ {
+  "n": 7,
+  "row": 43,
+  "file": "app.js",
+  "key": "L2@484#47",
+  "en": "Correct.",
+  "ms": "Betul."
+ },
+ {
+  "n": 8,
+  "row": 52,
+  "file": "app.js",
+  "key": "L2@690#75",
+  "en": "Notes",
+  "ms": "Nota"
+ },
+ {
+  "n": 9,
+  "row": 79,
+  "file": "app.js",
+  "key": "pair@466#8",
+  "en": "R<sub>A</sub> + R<sub>B</sub> = R<sub>C</sub> = 0.76",
+  "ms": "R<sub>A</sub> + R<sub>B</sub> = R<sub>C</sub> = 0.76"
+ },
+ {
+  "n": 10,
+  "row": 83,
+  "file": "app.js",
+  "key": "pair@469#12",
+  "en": "ABC is a single rigid beam, so moments about B give R<sub>A</sub> = (250 − x)/250 for any x on it",
+  "ms": "ABC ialah satu rigid beam, jadi moment terhadap B memberi R<sub>A</sub> = (250 − x)/250 bagi sebarang x padanya"
+ },
+ {
+  "n": 11,
+  "row": 84,
+  "file": "app.js",
+  "key": "pair@469#13",
+  "en": "B carries no load",
+  "ms": "B tidak membawa load"
+ },
+ {
+  "n": 12,
+  "row": 87,
+  "file": "app.js",
+  "key": "pair@471#16",
+  "en": "Every mass on the bridge is doubled. What happens to the influence line for R<sub>A</sub>?",
+  "ms": "Setiap jisim di atas jambatan digandakan. Apakah yang berlaku kepada influence line bagi R<sub>A</sub>?"
+ },
+ {
+  "n": 13,
+  "row": 88,
+  "file": "app.js",
+  "key": "pair@472#17",
+  "en": "it doubles",
+  "ms": "ia berganda"
+ },
+ {
+  "n": 14,
+  "row": 98,
+  "file": "app.js",
+  "key": "pair@679",
+  "en": "Explorer · tasks and concept questions (${e1} of 10 done)",
+  "ms": "Explorer · tugasan dan soalan kefahaman (${e1} daripada 10 selesai)"
+ },
+ {
+  "n": 15,
+  "row": 105,
+  "file": "app.js",
+  "key": "tx@358#29",
+  "en": "Full screen is not available here; use your browser's full-screen mode.",
+  "ms": "Full screen tidak tersedia di sini; guna mod full screen browser anda."
+ },
+ {
+  "n": 16,
+  "row": 111,
+  "file": "app.js",
+  "key": "tx@573#58",
+  "en": "Confidence at first check: sure and fully right ${e1}, sure but not fully right ${e2}, unsure or guessing but fully right ${e3}, unsure or guessing and not fully right ${e4}.",
+  "ms": "Keyakinan pada semakan pertama: yakin dan betul sepenuhnya ${e1}, yakin tetapi tidak betul sepenuhnya ${e2}, kurang pasti atau teka tetapi betul sepenuhnya ${e3}, kurang pasti atau teka dan tidak betul sepenuhnya ${e4}."
+ },
+ {
+  "n": 17,
+  "row": 114,
+  "file": "app.js",
+  "key": "tx@581#61",
+  "en": "Erase all answers",
+  "ms": "Padam semua jawapan"
+ },
+ {
+  "n": 18,
+  "row": 130,
+  "file": "p1_start_notes.html",
+  "key": "n1/span@136#55",
+  "en": "the loads",
+  "ms": "load"
+ },
+ {
+  "n": 19,
+  "row": 154,
+  "file": "p1_start_notes.html",
+  "key": "n2/span@152#73",
+  "en": "2 The laboratory model",
+  "ms": "2 Model makmal"
+ },
+ {
+  "n": 20,
+  "row": 157,
+  "file": "p1_start_notes.html",
+  "key": "n2/span@164#79",
+  "en": "Supports and hinges",
+  "ms": "Support dan hinge"
+ },
+ {
+  "n": 21,
+  "row": 188,
+  "file": "p1_start_notes.html",
+  "key": "n3/span@210#114",
+  "en": "Step 3 · Carry the hinge force into beam ABC",
+  "ms": "Langkah 3 · Pindahkan hinge force ke beam ABC"
+ },
+ {
+  "n": 22,
+  "row": 206,
+  "file": "p1_start_notes.html",
+  "key": "n3/span@239#133",
+  "en": "A unit load stands at the tip C. What is \\(\\eta_B\\)?",
+  "ms": "Unit load berada di hujung C. Berapakah \\(\\eta_B\\)?"
+ },
+ {
+  "n": 23,
+  "row": 217,
+  "file": "p1_start_notes.html",
+  "key": "n4/span@254#141",
+  "en": "Müller–Breslau principle",
+  "ms": "Prinsip Müller–Breslau"
+ },
+ {
+  "n": 24,
+  "row": 228,
+  "file": "p1_start_notes.html",
+  "key": "n4/span@270#154",
+  "en": "Section read",
+  "ms": "Section sudah dibaca"
+ },
+ {
+  "n": 25,
+  "row": 256,
+  "file": "p1_start_notes.html",
+  "key": "n5/span@305#182",
+  "en": "≈ 6 min read",
+  "ms": "≈ 6 min bacaan"
+ },
+ {
+  "n": 26,
+  "row": 260,
+  "file": "p1_start_notes.html",
+  "key": "n6/p@321#188",
+  "en": "<b>How to compare.</b> Report the difference \\(\\eta_{\\text{test}}-\\eta_{\\text{theory}}\\) at every halt. A percentage difference is meaningful only where the theoretical ordinate is not small: at halt 2, where \\(\\eta_A = 0.2\\), a gauge error of one division (0.02 per unit load) is already 10 %, and where the theoretical value is zero the percentage is undefined. Judge the agreement by the absolute difference and by the shape of the line.",
+  "ms": "<b>Cara membandingkan.</b> Laporkan perbezaan \\(\\eta_{\\text{test}}-\\eta_{\\text{theory}}\\) pada setiap halt. Perbezaan peratusan hanya bermakna apabila ordinate teori tidak kecil: di halt 2, di mana \\(\\eta_A = 0.2\\), error gauge satu division (0.02 per unit load) sudah 10 %, dan apabila nilai teori sifar, peratusan tidak tertakrif. Nilai persetujuan berdasarkan perbezaan mutlak dan bentuk garis."
+ },
+ {
+  "n": 27,
+  "row": 269,
+  "file": "p1_start_notes.html",
+  "key": "n7/span@331#193",
+  "en": "7 Sources of error",
+  "ms": "7 Sumber error"
+ },
+ {
+  "n": 28,
+  "row": 281,
+  "file": "p1_start_notes.html",
+  "key": "n7/span@347#207",
+  "en": "Quick check",
+  "ms": "Semakan pantas"
+ },
+ {
+  "n": 29,
+  "row": 304,
+  "file": "p1_start_notes.html",
+  "key": "n9/span@374#229",
+  "en": "for a distributed load",
+  "ms": "bagi distributed load"
+ },
+ {
+  "n": 30,
+  "row": 305,
+  "file": "p1_start_notes.html",
+  "key": "n9/span@374#230",
+  "en": "The extreme of a load train occurs with one load on a vertex.",
+  "ms": "Nilai ekstrem load train berlaku dengan satu load pada vertex."
+ },
+ {
+  "n": 31,
+  "row": 316,
+  "file": "p1_start_notes.html",
+  "key": "span@4#1",
+  "en": "For My Students",
+  "ms": "Untuk Pelajar Saya"
+ },
+ {
+  "n": 32,
+  "row": 335,
+  "file": "p1_start_notes.html",
+  "key": "v-start/p@35#12",
+  "en": "The laboratory model is a cantilever bridge 1130 mm long: two anchor beams with cantilever arms and a suspended span on hinges at C and D. You will move a mass along it, read six dial gauges, and compare what you measure with the influence lines that statics predicts.",
+  "ms": "Model makmal ini ialah cantilever bridge sepanjang 1130 mm: dua anchor beam dengan cantilever arm, dan suspended span yang ditumpu pada hinge di C dan D. Anda akan menggerakkan jisim di sepanjang jambatan, membaca enam dial gauge, dan membandingkan hasil ukuran dengan influence line yang diramal oleh statik."
+ },
+ {
+  "n": 33,
+  "row": 339,
+  "file": "p1_start_notes.html",
+  "key": "v-start/span@37#13",
+  "en": "After this session you should be able to",
+  "ms": "Selepas sesi ini, anda sepatutnya boleh"
+ },
+ {
+  "n": 34,
+  "row": 343,
+  "file": "p1_start_notes.html",
+  "key": "v-start/span@74#21",
+  "en": "Notes",
+  "ms": "Nota"
+ },
+ {
+  "n": 35,
+  "row": 366,
+  "file": "p2_slides.html",
+  "key": "deck/span@115#57",
+  "en": "Predict first",
+  "ms": "Ramal dahulu"
+ },
+ {
+  "n": 36,
+  "row": 377,
+  "file": "p2_slides.html",
+  "key": "deck/span@129#68",
+  "en": "5 kg at A:",
+  "ms": "5 kg di A:"
+ },
+ {
+  "n": 37,
+  "row": 382,
+  "file": "p2_slides.html",
+  "key": "deck/span@134#73",
+  "en": "For",
+  "ms": "Bagi"
+ },
+ {
+  "n": 38,
+  "row": 383,
+  "file": "p2_slides.html",
+  "key": "deck/span@135#74",
+  "en": "over AB only:",
+  "ms": "pada AB sahaja:"
+ },
+ {
+  "n": 39,
+  "row": 390,
+  "file": "p2_slides.html",
+  "key": "deck/span@145#81",
+  "en": "2.5 kg at each of 17 halts, read all six gauges.",
+  "ms": "2.5 kg pada setiap 17 halt, baca keenam-enam gauge."
+ },
+ {
+  "n": 40,
+  "row": 394,
+  "file": "p2_slides.html",
+  "key": "deck/span@150#86",
+  "en": "How good is “good agreement”?",
+  "ms": "Sejauh mana “persetujuan yang baik”?"
+ },
+ {
+  "n": 41,
+  "row": 395,
+  "file": "p2_slides.html",
+  "key": "deck/span@151#87",
+  "en": "Source",
+  "ms": "Sumber"
+ },
+ {
+  "n": 42,
+  "row": 401,
+  "file": "p2_slides.html",
+  "key": "deck/span@153#93",
+  "en": "±0.03 is 3 % of the ordinate at A but 15 % at halt 2, and undefined where the ordinate is zero. Compare by <b>absolute difference</b>.",
+  "ms": "±0.03 ialah 3 % daripada ordinate di A tetapi 15 % di halt 2, dan tidak tertakrif apabila ordinate sifar. Bandingkan dengan <b>perbezaan mutlak</b>."
+ },
+ {
+  "n": 43,
+  "row": 403,
+  "file": "p2_slides.html",
+  "key": "deck/span@159#96",
+  "en": "Scan for the Explorer",
+  "ms": "Imbas untuk Explorer"
+ },
+ {
+  "n": 44,
+  "row": 409,
+  "file": "p2_slides.html",
+  "key": "deck/span@163#98",
+  "en": "Six straight-line influence lines",
+  "ms": "Enam influence line bersegmen lurus"
+ },
+ {
+  "n": 45,
+  "row": 411,
+  "file": "p2_slides.html",
+  "key": "deck/span@164#104",
+  "en": "Use and report",
+  "ms": "Guna dan lapor"
+ },
+ {
+  "n": 46,
+  "row": 413,
+  "file": "p2_slides.html",
+  "key": "deck/span@164#106",
+  "en": "Müller–Breslau: release, displace, read",
+  "ms": "Müller–Breslau: lepas, anjak, baca"
+ },
+ {
+  "n": 47,
+  "row": 434,
+  "file": "p2_slides.html",
+  "key": "deck/span@73#28",
+  "en": "Unknowns:",
+  "ms": "Anu:"
+ },
+ {
+  "n": 48,
+  "row": 435,
+  "file": "p2_slides.html",
+  "key": "deck/span@73#29",
+  "en": "four.",
+  "ms": "empat."
+ },
+ {
+  "n": 49,
+  "row": 442,
+  "file": "p2_slides.html",
+  "key": "deck/span@80#37",
+  "en": "Order matters:",
+  "ms": "Urutan penting:"
+ },
+ {
+  "n": 50,
+  "row": 461,
+  "file": "p2_slides.html",
+  "key": "spdf/span@11#3",
+  "en": "Download PDF",
+  "ms": "Muat turun PDF"
+ },
+ {
+  "n": 51,
+  "row": 469,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "checklist/span@255#202",
+  "en": "Equilibrium checked at every halt before moving on.",
+  "ms": "Equilibrium disemak pada setiap halt sebelum beralih."
+ },
+ {
+  "n": 52,
+  "row": 471,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "cusbox/span@21#8",
+  "en": "Quick fill:",
+  "ms": "Isi pantas:"
+ },
+ {
+  "n": 53,
+  "row": 476,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "drawer/span@359#273",
+  "en": "Reactions positive up; \\(R_C\\), \\(R_D\\) positive pressing down on the tips.",
+  "ms": "Reaction positif ke atas; \\(R_C\\), \\(R_D\\) positif apabila menekan ke bawah pada hujung."
+ },
+ {
+  "n": 54,
+  "row": 478,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "drawer/span@362#275",
+  "en": "on",
+  "ms": "pada"
+ },
+ {
+  "n": 55,
+  "row": 500,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "exsummary/span@238#195",
+  "en": "Your attempt",
+  "ms": "Cubaan anda"
+ },
+ {
+  "n": 56,
+  "row": 504,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "gnone/span@345#268",
+  "en": "No entry matches.",
+  "ms": "Tiada entri yang sepadan."
+ },
+ {
+  "n": 57,
+  "row": 508,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "p2/span@277#223",
+  "en": "Copy table",
+  "ms": "Salin jadual"
+ },
+ {
+  "n": 58,
+  "row": 511,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "q1/span@104#56",
+  "en": "marks",
+  "ms": "markah"
+ },
+ {
+  "n": 59,
+  "row": 525,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "q10/span@227#180",
+  "en": "The Test 2 pair now crosses the bridge from F towards A, so the 2.5 kg mass is 100 mm to the <em>left</em> of the 5 kg mass. Find the most negative \\(R_A\\), the largest hinge force \\(R_C\\), and the position of the 5 kg mass for the largest \\(R_C\\). Compare with Worked example 1 in the Notes.",
+  "ms": "Pasangan Test 2 kini merentasi jambatan dari F ke arah A, jadi jisim 2.5 kg berada 100 mm di <em>kiri</em> jisim 5 kg. Cari \\(R_A\\) paling negatif, hinge force \\(R_C\\) terbesar, dan kedudukan jisim 5 kg bagi \\(R_C\\) terbesar. Bandingkan dengan Worked example 1 dalam Nota."
+ },
+ {
+  "n": 60,
+  "row": 527,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "q10/span@228#182",
+  "en": "largest",
+  "ms": "terbesar"
+ },
+ {
+  "n": 61,
+  "row": 535,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "q10/span@232#190",
+  "en": "2.5 kg mass at C (5 kg at 540 mm):",
+  "ms": "jisim 2.5 kg di C (5 kg di 540 mm):"
+ },
+ {
+  "n": 62,
+  "row": 540,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "q2-free/textarea[data-ph-en]@125#71",
+  "en": "Expressions for each range of x",
+  "ms": "Ungkapan bagi setiap julat x"
+ },
+ {
+  "n": 63,
+  "row": 561,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "q3/span@138#90",
+  "en": "\\(R_B\\)",
+  "ms": ""
+ },
+ {
+  "n": 64,
+  "row": 563,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "q3/span@140#92",
+  "en": "Check",
+  "ms": "Semak"
+ },
+ {
+  "n": 65,
+  "row": 567,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "q3/span@142#96",
+  "en": "Worked solution",
+  "ms": "Penyelesaian"
+ },
+ {
+  "n": 66,
+  "row": 572,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "q3/span@145#101",
+  "en": "(c) 4 kg axle at C:",
+  "ms": "(c) Axle 4 kg di C:"
+ },
+ {
+  "n": 67,
+  "row": 579,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "q4/span@153#108",
+  "en": "whole",
+  "ms": "seluruh"
+ },
+ {
+  "n": 68,
+  "row": 651,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "t2/span@276#217",
+  "en": "5 kg at (mm)",
+  "ms": "5 kg di (mm)"
+ },
+ {
+  "n": 69,
+  "row": 652,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "t2/span@276#218",
+  "en": "Reading (div)",
+  "ms": "Bacaan (div)"
+ },
+ {
+  "n": 70,
+  "row": 654,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "tasks/span@41#13",
+  "en": "Part 1 · Explorer tasks",
+  "ms": "Bahagian 1 · Tugasan Explorer"
+ },
+ {
+  "n": 71,
+  "row": 661,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "tk2/span@50#20",
+  "en": "Open an explanation",
+  "ms": "Buka penerangan"
+ },
+ {
+  "n": 72,
+  "row": 668,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "tk3/span@59#27",
+  "en": "Check",
+  "ms": "Semak"
+ },
+ {
+  "n": 73,
+  "row": 684,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "treset/span@95#51",
+  "en": "Reset",
+  "ms": "Set semula"
+ },
+ {
+  "n": 74,
+  "row": 686,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "v-exercises/span@103#54",
+  "en": "Part A · Reading and deriving influence lines",
+  "ms": "Bahagian A · Membaca dan menerbitkan influence line"
+ },
+ {
+  "n": 75,
+  "row": 703,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "v-glossary/span@300#227",
+  "en": "Symbols, units and terms used on this page.",
+  "ms": "Simbol, unit dan istilah yang digunakan pada page ini."
+ },
+ {
+  "n": 76,
+  "row": 705,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "v-glossary/span@304#230",
+  "en": "Position along the bridge measured from A, in mm. In the Explorer it is the position of P<sub>1</sub>.",
+  "ms": "Kedudukan di sepanjang jambatan diukur dari A, dalam mm. Dalam Explorer, ia kedudukan P<sub>1</sub>."
+ },
+ {
+  "n": 77,
+  "row": 707,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "v-glossary/span@306#232",
+  "en": "Support reactions at A, B, E and F. Positive upwards; negative means the support holds the deck down (uplift).",
+  "ms": "Support reaction di A, B, E dan F. Positif ke atas; negatif bermaksud support menahan deck ke bawah (uplift)."
+ },
+ {
+  "n": 78,
+  "row": 716,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "v-glossary/span@315#241",
+  "en": "Error in placing a mass on its halt (about ±5 mm).",
+  "ms": "Error semasa meletakkan jisim pada halt (lebih kurang ±5 mm)."
+ },
+ {
+  "n": 79,
+  "row": 731,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "v-glossary/span@332#256",
+  "en": "For a simple span, each reaction equals the load times the distance to the other support, divided by the span.",
+  "ms": "Bagi simple span, setiap reaction sama dengan load didarab jarak ke support yang satu lagi, dibahagi span."
+ },
+ {
+  "n": 80,
+  "row": 740,
+  "file": "p3_explorer_ex_lab.html",
+  "key": "v-glossary/span@341#265",
+  "en": "Gauge reading that does not return to zero between halts; re-zero before each halt.",
+  "ms": "Bacaan gauge yang tidak kembali ke sifar antara halt; re-zero sebelum setiap halt."
+ }
+]
