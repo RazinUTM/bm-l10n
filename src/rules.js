@@ -23,7 +23,7 @@ const maskPh = s => (s || '').replace(PH_ANY, ' 9 ');   // a placeholder counts 
 // ("Room" in "Deal Room", "Team" in "Park Management Team") is not read as the bare word.
 function maskPhrases(text, terms) {
   let t = text || '';
-  for (const p of terms) if (p.includes(' ')) t = t.replace(new RegExp(esc(p), 'giu'), m => ' '.repeat(m.length));
+  for (const p of terms) if (/[\s-]/.test(p)) t = t.replace(new RegExp(esc(p), 'giu'), m => ' '.repeat(m.length));
   return t;
 }
 const F = (rule, level, r, msg, suggest = '') => ({ rule, level, file: r.file, key: r.key, en: r.en, ms: r.ms, msg, suggest });
@@ -193,6 +193,11 @@ export function r10_termbase(rows, ctx) {
   const out = [];
   const keepPhrases = ctx.terms.filter(t => t.tier === 2).map(t => t.en).filter(e => e.includes(' '));
   const bmPhrases = ctx.terms.flatMap(t => (t.bm || '').split('|')).map(b => b.trim()).filter(b => b.includes(' '));
+  // Longest match wins: for each term, the longer termbase terms that contain it as a word
+  // ("linked" inside "university-linked", "Room" inside "Deal Room"), of any tier.
+  const longer = new Map(ctx.terms.map(t => [t, ctx.terms
+    .filter(o => o !== t && o.en.length > t.en.length && has(o.en, t.en))
+    .map(o => o.en).sort((a, b) => b.length - a.length)]));
   const seen = new Set();
   for (const r of rows) {
     if (!r.ms) continue;
@@ -206,10 +211,9 @@ export function r10_termbase(rows, ctx) {
         if (has(masked, rej) && !seen.has(k)) { seen.add(k); out.push(F('R10', 'FIX', r, `rejected form "${rej}" (termbase: ${t.en} → ${t.bm || t.en})`, `"${t.bm || t.en}"`)); }
       }
       if (!r.en) continue;
-      // single-word terms are matched with kept-English phrases blanked out on both sides
-      const multi = t.en.includes(' ');
-      const enText = multi ? maskPh(r.en) : maskPhrases(maskPh(r.en), keepPhrases.filter(p => p !== t.en));
-      const msText = multi ? msNoPh : maskPhrases(msNoPh, keepPhrases.filter(p => p !== t.en));
+      // the term is matched with every longer termbase term that contains it blanked out
+      const enText = maskPhrases(maskPh(r.en), longer.get(t));
+      const msText = maskPhrases(msNoPh, longer.get(t));
       if (!hasTerm(enText, t.en)) continue;
       const alts = (t.bm || '').split('|').map(x => x.trim()).filter(Boolean);
       const msHas = alts.some(a => has(msText, a));
@@ -276,16 +280,27 @@ export function r12_patterns(rows, ctx) {
 
 /* ---------- R13 unchecked termbase entries ---------- */
 export function r13_unchecked(rows, ctx) {
-  return ctx.terms.filter(t => t.tier !== 2 && t.status !== 'checked' && t.status !== 'n/a')
-    .map(t => ({ rule: 'R13', level: 'INFO', file: 'termbase', key: t.en, en: t.en, ms: t.bm, msg: `"${t.bm.split('|')[0]}" not yet checked against PRPM`, suggest: `https://prpm.dbp.gov.my/Cari1?keyword=${encodeURIComponent(t.bm.split('|')[0].trim().split(' ')[0])}` }));
+  const out = [];
+  for (const t of ctx.terms) {
+    const w = (t.bm || t.en).split('|')[0].trim();
+    if (t.status === 'flagged') {
+      // checked, and PRPM does not support the chosen form: the author has a decision to make
+      out.push({ rule: 'R13', level: 'WATCH', file: 'termbase', key: t.en, en: t.en, ms: w, msg: `PRPM does not support "${w}": ${t.note || 'see the termbase note'}`, suggest: t.source || '' });
+    } else if (t.tier !== 2 && t.status !== 'checked' && t.status !== 'n/a') {
+      out.push({ rule: 'R13', level: 'INFO', file: 'termbase', key: t.en, en: t.en, ms: w, msg: `"${w}" not yet checked against PRPM`, suggest: `https://prpm.dbp.gov.my/Cari1?keyword=${encodeURIComponent(w.split(' ')[0])}` });
+    }
+  }
+  return out;
 }
+
+export const OPT_IN = new Set(['R03']);   // off unless asked for: noisy without real layout widths
 
 export const RULES = [r01_placeholders, r02_missing, r03_length, r04_untranslated, r05_grammar, r06_pronouns, r07_sila_button, r08_plural, r09_control_names, r10_termbase, r11_mixed, r12_patterns, r13_unchecked];
 
 export const RULE_DOC = {
   R01: 'placeholders and markup identical in EN and MS',
   R02: 'every EN key has an MS string',
-  R03: 'length growth beyond what Malay normally needs',
+  R03: 'length growth beyond what Malay normally needs (opt-in: --with R03)',
   R04: 'MS identical to EN on a multi-word string',
   R05: 'spelling and grammar that are always wrong (adalah merupakan, di sini, di- prefix, counted reduplication)',
   R06: 'pronouns kamu/awak/engkau/kau/aku in app strings',
@@ -295,5 +310,5 @@ export const RULE_DOC = {
   R10: 'termbase: rejected forms, expected renderings, tier-2 terms kept in English',
   R11: 'the same English word kept in some strings and translated in others',
   R12: 'calque and idiom patterns from patterns.csv',
-  R13: 'termbase entries not yet checked against PRPM',
+  R13: 'termbase entries not yet checked against PRPM (INFO), or checked and not supported by PRPM (status flagged: WATCH)',
 };

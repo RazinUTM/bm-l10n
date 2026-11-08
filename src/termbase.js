@@ -6,7 +6,8 @@
 //   bm      the Malay rendering the project has chosen; for tier 2 this equals en
 //   tier    1 = translate, 2 = keep in English, 3 = grey zone (decided per project)
 //   reject  forms that must not appear in MS strings, separated by |
-//   status  checked | unchecked | n/a   (DBP / PRPM check of the bm form)
+//   status  checked | unchecked | flagged | n/a   (PRPM check of the bm form; flagged = checked,
+//           and PRPM does not support it: the author has a decision to make)
 //   source  URL of the PRPM page or other evidence; empty if none
 //   note    free text (reason for the decision)
 //
@@ -84,4 +85,20 @@ export async function loadPatterns(path) {
     header.forEach((h, i) => { o[h] = (r[i] ?? '').trim(); });
     return { re: new RegExp(o.pattern, (o.flags === '-' ? '' : (o.flags || 'i')) + 'u'), pattern: o.pattern, suggest: o.suggest || '', note: o.note || '', level: (o.level || 'WATCH').toUpperCase() };
   }).filter(p => p.pattern);
+}
+
+/**
+ * Accepted findings: a CSV with columns  rule, file, match, note
+ * A finding is accepted when its rule matches (or *), its file matches (or *), and `match`
+ * is a substring of its English or Malay text (or equals its key). Matching on text, not on
+ * line-based keys, keeps an entry valid when code moves.
+ */
+export async function loadAccepted(path) {
+  const rows = parseCSV(await readFile(path, 'utf8'));
+  const header = rows.shift().map(h => h.trim().toLowerCase());
+  return rows.map(r => {
+    const o = {};
+    header.forEach((h, i) => { o[h] = (r[i] ?? '').trim(); });
+    return { rule: o.rule || '*', file: o.file || '*', match: o.match || '', note: o.note || '' };
+  }).filter(a => a.match);
 }

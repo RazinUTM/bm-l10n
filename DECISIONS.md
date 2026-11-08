@@ -51,3 +51,13 @@ Decided by: AI, correcting its own v0.1.0 example.
 Decision: blank placeholders and kept-English phrases before matching words; count a tier-2 term as kept wherever it appears in the Malay; allow several renderings in `bm` with `|`; ignore an empty Malay string when the English has no word (`L("s", "")`); ignore English plural-suffix template expressions in R01; split label heads only on spaced hyphens.
 Rationale: each change removes a class of false positive seen on IMPAK main (FIX 15 → 0 with no real finding lost); each has a regression test.
 Decided by: AI; author to confirm by reviewing the remaining 20 WATCH findings.
+
+## 2026-11-08 Answers to DESIGN §9 (author, review page)
+Decision: R03 opt-in; R09 stays FIX; next loader follows Lab S2; no `bml draft`; capitalisation convention kept.
+Rationale: the evidence on each card of the review page (IMPAK runs of 8 Nov).
+Decided by: Ahmad Razin (review page "IMPAK BM review", 8 Nov 2026).
+
+## 2026-11-08 Accepted findings, longest match, flagged terms (v0.1.2)
+Decision: (1) an accepted-findings CSV (`rule,file,match,note`) removes findings the author has decided to keep from the counts and lists them under "Accepted", matching on text rather than line-based keys, with stale entries reported; (2) a termbase term contained in a longer termbase term is masked there (longest match wins, any tier); (3) termbase `status=flagged` marks a form that PRPM does not support and reports it as WATCH.
+Rationale: the author kept three strings against the termbase (review N2, N6, N7); without (1) they would stay as WATCH on every pull request and teach him to ignore the check. (2) follows from N1 (*university-linked → berkait universiti* while *linked* stays). (3) follows from the PRPM check of *bergraduat*.
+Decided by: AI, from the author's answers; author to confirm with the IMPAK pull request.

@@ -201,3 +201,47 @@ test('R05 suggestion quotes the original placeholder, not the mask', async () =>
   const f = find(r, 'R05', 'files.n')[0];
   assert.equal(f.suggest, '"{n} fail"');
 });
+
+test('R03 is opt-in: off by default, on with "with"', async () => {
+  const { r03_length } = await import('../src/rules.js');
+  const def = await run();
+  assert.equal(find(def, 'R03').length, 0);
+  const on = await run({ with: ['R03'] });
+  const direct = r03_length([{ file: 'x', key: 'k', en: 'New game', ms: 'Permainan yang sangat baharu' }], { options: {} });
+  assert.equal(direct.length, 1);
+  assert.ok(on.findings.every(f => f.rule !== 'R03' || f.level === 'WATCH'));
+});
+
+test('longest match: "linked" inside the termbase term "university-linked" is not the bare term', async () => {
+  const { r10_termbase } = await import('../src/rules.js');
+  const terms = [
+    { en: 'linked', bm: 'linked', tier: 2, reject: [], status: 'n/a', source: '', note: '' },
+    { en: 'university-linked', bm: 'berkait universiti', tier: 1, reject: [], status: 'n/a', source: '', note: '' },
+  ];
+  const rows = [
+    { file: 'x', key: 'a', en: 'University-linked', ms: 'Berkait universiti' },
+    { file: 'x', key: 'b', en: 'Admit linked tenants first.', ms: 'Terima penyewa berkait universiti dahulu.' },
+    { file: 'x', key: 'c', en: 'Admit linked tenants first.', ms: 'Terima penyewa linked dahulu.' },
+  ];
+  assert.deepEqual(r10_termbase(rows, { terms, options: {} }).filter(f => f.level !== 'INFO').map(f => f.key), ['b']);
+});
+
+test('accepted findings leave the counts, stay listed, and a stale entry is reported', async () => {
+  const r = await run({ accept: fx('accepted.csv') });
+  assert.equal(find(r, 'R07', 'btn.save').length, 0);
+  assert.equal(r.summary.accepted, 1);
+  assert.equal(r.accepted[0].note, 'author keeps it (test)');
+  assert.ok(r.findings.some(f => f.rule === 'R00' && /no longer matches/.test(f.msg)));
+});
+
+test('R13: a flagged term (PRPM does not support it) is a WATCH with its note', async () => {
+  const { r13_unchecked } = await import('../src/rules.js');
+  const terms = [
+    { en: 'graduate', bm: 'bergraduat', tier: 1, reject: [], status: 'flagged', source: 'https://prpm.dbp.gov.my/Cari1?keyword=graduat', note: 'graduat is not in Kamus Dewan' },
+    { en: 'n/a', bm: 't/b', tier: 1, reject: [], status: 'unchecked', source: '', note: '' },
+    { en: 'phase', bm: 'Fasa', tier: 1, reject: [], status: 'checked', source: 'x', note: '' },
+  ];
+  const f = r13_unchecked([], { terms, options: {} });
+  assert.deepEqual(f.map(x => `${x.key}:${x.level}`), ['graduate:WATCH', 'n/a:INFO']);
+  assert.match(f[0].msg, /not in Kamus Dewan/);
+});

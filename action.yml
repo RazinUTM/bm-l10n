@@ -22,8 +22,16 @@ inputs:
     description: Names of the inline bilingual helpers, comma-separated (e.g. L,LL).
     required: false
     default: 'L'
+  accepted:
+    description: Findings the author has accepted (CSV rule,file,match,note); they leave the counts and are listed at the end of the report.
+    required: false
+    default: ''
   ignore:
-    description: Rules to skip, comma-separated (e.g. R03).
+    description: Rules to skip, comma-separated.
+    required: false
+    default: ''
+  with:
+    description: Opt-in rules to add, comma-separated (R03, the length rule, is off by default).
     required: false
     default: ''
   fail-on-fix:
@@ -48,5 +56,7 @@ runs:
         BML_PATTERNS: ${{ inputs.patterns }}
         BML_CALL: ${{ inputs.call }}
         BML_IGNORE: ${{ inputs.ignore }}
+        BML_WITH: ${{ inputs.with }}
+        BML_ACCEPT: ${{ inputs.accepted }}
         BML_FAIL: ${{ inputs.fail-on-fix }}
       run: bash "$GITHUB_ACTION_PATH/scripts/action.sh"

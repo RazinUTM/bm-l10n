@@ -10,10 +10,12 @@
 // Options for lint:
 //   --termbase <csv>   project termbase (default: ./termbase.csv if present)
 //   --patterns <csv>   calque patterns (default: ./patterns.csv if present)
+//   --accept <csv>     findings the author has accepted: rule,file,match,note (default: ./bm-lint-accepted.csv if present)
 //   --format md|json   report format (default md)
 //   --out <file>       write the report to a file instead of stdout
 //   --rules R01,R09    run only these rules
-//   --ignore R03,R11   skip these rules
+//   --ignore R11       skip these rules
+//   --with R03         also run opt-in rules (R03, the length rule, is off by default)
 //   --call L,LL        names of the inline bilingual helpers to extract (default L)
 //   --langs en,ms      language keys in the tables (default en,ms)
 //   --casual           allow casual pronouns (persona voice)
@@ -40,7 +42,7 @@ function parseArgs(argv) {
 }
 
 function usage(code = 0) {
-  console.log('usage: bml lint [--termbase t.csv] [--patterns p.csv] [--format md|json] [--out f] [--rules R..] [--ignore R..] [--call L] [--casual] [--no-fail] <files...>\n       bml terms <termbase.csv>\n       bml dbp <termbase.csv>');
+  console.log('usage: bml lint [--termbase t.csv] [--patterns p.csv] [--accept a.csv] [--format md|json] [--out f] [--rules R..] [--with R03] [--ignore R..] [--call L,LL] [--casual] [--no-fail] <files...>\n       bml terms <termbase.csv>\n       bml dbp <termbase.csv>');
   process.exit(code);
 }
 
@@ -53,17 +55,19 @@ async function main() {
     if (!o._.length) usage(1);
     const termbase = o.termbase || (existsSync('termbase.csv') ? 'termbase.csv' : undefined);
     const patterns = o.patterns || (existsSync('patterns.csv') ? 'patterns.csv' : undefined);
+    const accept = o.accept || (existsSync('bm-lint-accepted.csv') ? 'bm-lint-accepted.csv' : undefined);
     const result = await lint(o._.map(p => resolve(p)), {
-      termbase, patterns,
+      termbase, patterns, accept,
       langs: o.langs ? o.langs.split(',') : undefined,
       callName: o.call,
       rules: o.rules ? o.rules.split(',') : [],
       ignore: o.ignore ? o.ignore.split(',') : [],
+      with: o.with ? o.with.split(',') : [],
       allowCasualPronouns: !!o.allowCasualPronouns,
       relativeTo: process.cwd(),
     });
     const text = o.format === 'json' ? toJSON(result) : toMarkdown(result, { title: `bm-lint report — ${o._.join(', ')}`, showInfo: !o.quiet });
-    if (o.out) { await writeFile(o.out, text, 'utf8'); console.error(`wrote ${o.out}  (FIX ${result.summary.FIX} · WATCH ${result.summary.WATCH} · INFO ${result.summary.INFO})`); }
+    if (o.out) { await writeFile(o.out, text, 'utf8'); console.error(`wrote ${o.out}  (FIX ${result.summary.FIX} · WATCH ${result.summary.WATCH} · INFO ${result.summary.INFO}${result.summary.accepted ? ` · accepted ${result.summary.accepted}` : ''})`); }
     else process.stdout.write(text + '\n');
     process.exit(result.summary.FIX && !o.noFail ? 1 : 0);
   }

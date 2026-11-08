@@ -13,7 +13,7 @@ Existing open-source pieces each cover one layer — MT models (Mesolitica nanot
 In scope, in order of delivery:
 
 1. **`bml lint`** — mechanical checks on EN/MS string files against a project termbase and a pattern list, producing a FIX / WATCH / INFO report. *(v0.1.0)* Run as a **GitHub Action** on every pull request, with the report on the run's Summary page, because the author works in the browser and merges pull requests rather than running commands. *(v0.1.1)*
-2. **`bml draft`** — a first Malay draft through a pluggable backend. *Open (§9 Q4): drafts already come from Claude sessions using the `terjemah-bm-dbp` skill; a separate backend may add cost without helping the author.*
+2. ~~`bml draft`~~ — *not built (author's answer to §9 Q4, 8 Nov 2026): drafts come from Claude sessions using the `terjemah-bm-dbp` skill; the tool's job is the check.*
 3. **`bml eval`** — score a draft against a gold set of author-corrected strings (chrF / COMET where available, lint pass-rate, and a human A/B "written vs translated" protocol). *(later, once the gold set is reviewed)*
 
 Non-goals: training an MT model; storing or redistributing dictionary content from PRPM; deciding taste questions (register, idiom beyond the pattern list) automatically.
@@ -47,7 +47,7 @@ Out of scope so far: ARB, PO, `.strings`, XLIFF, and whatever Lab S2's build use
 |---|---|---|---|
 | R01 | FIX / WATCH | ICU/printf/`{x}` placeholders and tags differ; template `${}` counts differ (WATCH) | set comparison |
 | R02 | FIX | missing MS string | key diff |
-| R03 | WATCH | short string grew > 1.6× (≥ 8 chars), long string > 1.6× | length ratio; Malay runs 1.15–1.3× |
+| R03 | WATCH | short string grew > 1.6× (≥ 8 chars), long string > 1.6× — **opt-in** (`--with R03`) since v0.1.2 | length ratio; Malay runs 1.15–1.3× |
 | R04 | WATCH | MS identical to EN on ≥ 3 words, no tier-2 term inside | string equality |
 | R05 | FIX | `adalah merupakan`; `disini/kesana`; `di simpan`; `3 fail-fail` | always wrong in standard Malay |
 | R06 | FIX | `kamu/awak/engkau/kau/aku` in app strings (`--casual` disables) | regex |
@@ -57,13 +57,17 @@ Out of scope so far: ARB, PO, `.strings`, XLIFF, and whatever Lab S2's build use
 | R10 | FIX / WATCH / INFO | rejected forms; tier-2 term translated; tier-1 term left in English; grey-zone term not as chosen | termbase; capitalised entries match case-sensitively; rejected forms inside a chosen multi-word rendering are masked |
 | R11 | INFO | same capitalised English word kept in ≥ 2 strings and translated in ≥ 2 others | token statistics; tier-2 phrases masked |
 | R12 | FIX / WATCH | calque and idiom patterns from `patterns.csv` (Indonesian forms, "buys time", "(pilihan)", "membersihkan hutan", …) | regex with per-row level and flags |
-| R13 | INFO | termbase entries with `status=unchecked`, with the PRPM URL to check | bookkeeping |
+| R13 | INFO / WATCH | termbase entries with `status=unchecked` (INFO, with the PRPM URL to check); `status=flagged`, i.e. checked and not supported by PRPM (WATCH, with the note) | bookkeeping |
 
 ## 6. Termbase and patterns
 
 `termbase.csv`: `en, bm, tier, reject, status, source, note`. `reject` holds forms the project has rejected (`|`-separated). `status` ∈ checked / unchecked / n/a. `source` is the PRPM (or other) URL that supports the `bm` choice. A capitalised `en` matches case-sensitively (so `Level` the game term does not match "six levels").
 
 Several allowed renderings go in `bm` separated by `|` (`impact|impak ekonomi`): a tier-2 term counts as kept if the term or any listed rendering appears, also inside a longer kept phrase. Before matching words, placeholders (`{x}`, `${…}`, `%s`, tags) are blanked as a number-like token and kept-English multi-word phrases are blanked, so `{team}` is not the word *team* and *Room* in *Deal Room* is not the bare word *Room*. *(v0.1.1)*
+
+A term inside a longer termbase term is not the bare term: *linked* in *university-linked*, *Room* in *Deal Room* (longest match wins, any tier). *(v0.1.2)*
+
+`bm-lint-accepted.csv`: `rule, file, match, note`. Findings the author has decided to keep (an exception to a termbase rule, a reading he prefers) leave the counts and are listed under "Accepted" in the report. `match` is a substring of the English or Malay text, so an entry survives code moving to other lines; an entry that no longer matches anything is reported (R00), so the list cannot rot silently. *(v0.1.2)*
 
 `patterns.csv`: `pattern, level, suggest, note, flags`. `pattern` is a JS regex body; flags default to `i`; `-` means case-sensitive. The shipped list is generic Malaysian Malay; a project adds its own file or rows.
 
@@ -76,15 +80,16 @@ Markdown (default) or JSON. Markdown lists FIX, WATCH and INFO in that order, on
 - `node --test`: 25 tests on fixtures that reproduce each rule's positive case and the false positives met in the field (`Game Master` vs label `Game`; `penanda aras` vs rejected `aras`; `keluar` vs `ke luar`; `{team}`; *Room* in *Deal Room*; *Take* in *Take-home*; `L("s", "")`; a term next to an HTML tag).
 - IMPAK, 5 Nov code (442 pairs in 4 files): FIX 11 · WATCH 35 · INFO 13; 9 of the manual audit's 11 FIX items reported, plus the medal-label inconsistency the audit missed. **That run used a stale clone**; the author had already fixed these items in his 6–7 Nov pass.
 - IMPAK, main `badb3bd`, 8 Nov (1,578 strings in 11 files, 106 Malay-only), termbase taken from the author's `content/glossary-bm.md`, R03 off: **FIX 0 · WATCH 20 · INFO 14**. Each WATCH is a real decision (e.g. *University-linked → berkait universiti* in 9 strings against the rule that *linked* stays English). Before tuning, the same run gave FIX 15 · WATCH 65, all extra findings being false positives of the rules, now covered by tests.
+- IMPAK branch after the author's review (8 Nov, 24 answers applied): **FIX 0 · WATCH 1 · INFO 2 · accepted 5**. The one WATCH is *bergraduat*, flagged by the PRPM check (Khidmat Nasihat: *graduat* is not in Kamus Dewan Edisi Keempat or Kamus Dewan Perdana).
 - These figures are in-sample: the loader and rules were tuned on IMPAK. A second project (§9 Q3) is the out-of-sample test.
 - Gold set: `eval/gold/impak-v0.6.jsonl` — 23 pairs seeded from the audit; on 8 Nov, 15 settled in main by the author, 8 open. The author answers them in the review page; only answered rows count as gold.
 
-## 9. Open decisions (for the author)
+## 9. Decisions answered by the author (8 Nov 2026, review page "IMPAK BM review")
 
-*The author answers these in the review page "IMPAK BM review" (8 Nov 2026), where each question carries the evidence from the IMPAK runs and an updated recommendation: R03 off by default; R09 stays FIX; the next loader follows Lab S2; no `bml draft` for now; keep the capitalisation convention.*
+1. **Length rule (R03):** off by default; on with `--with R03` (evidence: 22 WATCH on IMPAK, none a real layout problem).
+2. **R09 level:** stays FIX (it found the two real cross-file problems, tile *Cash* and the medals).
+3. **Next loader:** whatever Lab S2's build (SEAA 3012, `web/build_web.py`) uses, as the out-of-sample test; ARB / PO / XLIFF only when a project needs them.
+4. **`bml draft`:** not built; drafts stay in Claude sessions with the skill.
+5. **Termbase matching:** keep the capitalisation convention; no `match` column.
 
-1. Does R03 (length) earn its place, or is it noise in practice? Default thresholds were loosened once already.
-2. Should R09 be WATCH rather than FIX when the English label is also a glossary term (medals)?
-3. ARB / PO / `.strings` loaders: which first? (ARB if a Flutter app is next; PO for anything gettext-based.)
-4. `bml draft` backend order: Claude API first (quality) or Mesolitica local first (free, offline)? The Mesolitica model card states no licence; download at runtime, never vendor.
-5. Should the termbase accept a `match` column (`cs`/`ci`/`regex`) instead of the capitalisation convention?
+Open: the second project; whether the termbase should gain a status between `checked` and `flagged` for forms DBP accepts but the project avoids (e.g. *muflis*).

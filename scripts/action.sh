@@ -22,6 +22,8 @@ patterns="${BML_PATTERNS:-}"
 args=(--call "${BML_CALL:-L}" --patterns "$patterns" --no-fail)
 [ -z "${BML_TERMBASE:-}" ] || args+=(--termbase "$BML_TERMBASE")
 [ -z "${BML_IGNORE:-}" ] || args+=(--ignore "$BML_IGNORE")
+[ -z "${BML_WITH:-}" ] || args+=(--with "$BML_WITH")
+[ -z "${BML_ACCEPT:-}" ] || args+=(--accept "$BML_ACCEPT")
 read -r -a files <<< "${BML_FILES:-}"
 if [ "${#files[@]}" -eq 0 ]; then
   echo "::error title=BM lint::no files given (input: files)"
@@ -47,7 +49,7 @@ for (const [level, kind] of [['FIX', 'error'], ['WATCH', 'warning']]) {
   }
 }
 fs.appendFileSync(output, `fix=${r.summary.FIX}\nwatch=${r.summary.WATCH}\n`);
-console.log(`BM lint: FIX ${r.summary.FIX} · WATCH ${r.summary.WATCH} · INFO ${r.summary.INFO} (${r.summary.rows} strings)`);
+console.log(`BM lint: FIX ${r.summary.FIX} · WATCH ${r.summary.WATCH} · INFO ${r.summary.INFO}${r.summary.accepted ? ` · accepted ${r.summary.accepted}` : ''} (${r.summary.rows} strings)`);
 JS
 
 fix="$(node -p "require('$tmp/bm-lint.json').summary.FIX")"

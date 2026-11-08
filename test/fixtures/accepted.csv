@@ -1,0 +1,3 @@
+rule,file,match,note
+R07,strings.json,Sila simpan,"author keeps it (test)"
+R12,*,no such text anywhere,stale entry (test)
