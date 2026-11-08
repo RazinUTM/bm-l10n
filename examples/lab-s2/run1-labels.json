@@ -1,0 +1,92 @@
+{
+ "run": "run1.json",
+ "rubric": "PROTOCOL.md#labels",
+ "labelled_on": "2026-11-08",
+ "findings": [
+  {
+   "rule": "R05",
+   "level": "FIX",
+   "file": "p1_start_notes.html",
+   "key": "n2/span@181#98",
+   "en": "Beam ABC is continuous over B, so it carries moment there (that is why it can cantilever out to C). The hinge at C lets the two members rotate relative to each other, so the moment there is zero.",
+   "ms": "Beam ABC selanjar melalui B, jadi ia membawa moment di situ (sebab itulah ia boleh menjulur sebagai cantilever hingga C). Hinge di C membenarkan dua anggota berputar relatif antara satu sama lain, jadi moment di situ sifar.",
+   "msg": "calque of \"one another\"",
+   "labeller": "Claude",
+   "label": "FP",
+   "cause": "pattern",
+   "reason": "The R05 entry is wrong: DBP Khidmat Nasihat says \"antara satu sama lain\" is correct (21.02.2011, 05.11.2011) and Kamus Dewan Edisi Keempat uses it in its own definitions; the suggested \"sesama sendiri\" would not fit two structural members.",
+   "evidence": "https://prpm.dbp.gov.my/Cari1?keyword=tidak+sama+dengan+yang+lain&d=175768 ; https://prpm.dbp.gov.my/Cari1?d=175768&keyword=homonim",
+   "author": null
+  },
+  {
+   "rule": "R09",
+   "level": "FIX",
+   "file": "*",
+   "key": "Müller",
+   "en": "Müller",
+   "ms": "Prinsip Müller",
+   "msg": "label \"Müller\" is translated \"Prinsip Müller\" (p1_start_notes.html:n4/span@254#141) but 5 prose strings still say \"Müller\": p1_start_notes.html:n3/span@227#123, p1_start_notes.html:n8/ul@359#215, p1_start_notes.html:n8/p@363#216, p2_slides.html:deck/ol@26#8, p3_explorer_ex_lab.html:q9/span@221#175 — one form everywhere",
+   "labeller": "Claude",
+   "label": "FP",
+   "cause": "other",
+   "reason": "Label split at the unspaced en dash inside the name \"Müller–Breslau\", so \"Müller\" was taken as a control label; the five prose strings correctly say Müller–Breslau.",
+   "author": null
+  },
+  {
+   "rule": "R04",
+   "level": "WATCH",
+   "file": "p3_explorer_ex_lab.html",
+   "key": "v-lab/span@259#205",
+   "en": "kgf per division",
+   "ms": "kgf per division",
+   "msg": "MS is identical to EN; intentional?",
+   "labeller": "Claude",
+   "label": "TP-decision",
+   "cause": "",
+   "reason": "\"kgf per division\" is identical by the author's rule (kgf is a unit, division a kept gauge term); the decision belongs in a termbase row (division, tier 2), after which R04 is silent.",
+   "author": null
+  },
+  {
+   "rule": "R12",
+   "level": "WATCH",
+   "file": "p2_slides.html",
+   "key": "sprev/span@6#1",
+   "en": "Previous",
+   "ms": "Sebelum",
+   "msg": "bare \"sebelum\" is a preposition; as a label it needs -nya",
+   "labeller": "Claude",
+   "label": "TP-change",
+   "cause": "",
+   "reason": "Slide button Previous rendered \"Sebelum\" (a preposition) beside Next = \"Seterusnya\"; the label needs \"Sebelumnya\", the form the author chose for IMPAK (previous -> sebelumnya, checked on PRPM).",
+   "author": null
+  },
+  {
+   "rule": "R11",
+   "level": "INFO",
+   "file": "*",
+   "key": "Gauge",
+   "en": "Gauge",
+   "ms": "",
+   "msg": "\"Gauge\" kept in English in 3 strings, not in 2 — decide once and add it to the termbase (kept: p2_slides.html:deck/span@152#90, p3_explorer_ex_lab.html:q7/span@191#144, p3_explorer_ex_lab.html:q7/span@198#152; not: p1_start_notes.html:n7/span@341#200, p3_explorer_ex_lab.html:v-glossary/span@341#265)",
+   "labeller": "Claude",
+   "label": "FP",
+   "cause": "other",
+   "reason": "\"Gauge\" is kept in all five strings; in two the Malay word order moves it mid-sentence and it is written \"gauge\" (Resolusi gauge, Bacaan gauge), which the case-sensitive match counts as not kept.",
+   "author": null
+  },
+  {
+   "rule": "R11",
+   "level": "INFO",
+   "file": "*",
+   "key": "Worked",
+   "en": "Worked",
+   "ms": "",
+   "msg": "\"Worked\" kept in English in 7 strings, not in 18 — decide once and add it to the termbase (kept: p1_start_notes.html:n5/span@289#163, p1_start_notes.html:n5/span@297#168, p1_start_notes.html:n8/p@363#216; not: p3_explorer_ex_lab.html:q1/span@113#62, p3_explorer_ex_lab.html:q1/span@115#64, p3_explorer_ex_lab.html:q2/span@126#74)",
+   "labeller": "Claude",
+   "label": "TP-decision",
+   "cause": "",
+   "reason": "Two different terms share the word: \"Worked example\" is kept as a heading term (7), \"Worked solution\" is translated \"Penyelesaian\" (18). The observation is right and declaring \"Worked example\" as a kept term is worth recording, but the \"decide once\" framing does not fit; debatable, for the author.",
+   "author": null
+  }
+ ]
+}

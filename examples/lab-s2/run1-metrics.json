@@ -1,0 +1,76 @@
+{
+ "FIX": {
+  "n": 2,
+  "strict": "0/2",
+  "standard": "0/2",
+  "strict_ci": [
+   0,
+   0.66
+  ],
+  "standard_ci": [
+   0,
+   0.66
+  ]
+ },
+ "WATCH": {
+  "n": 2,
+  "strict": "1/2",
+  "standard": "2/2",
+  "strict_ci": [
+   0.09,
+   0.91
+  ],
+  "standard_ci": [
+   0.34,
+   1
+  ]
+ },
+ "FIX+WATCH": {
+  "n": 4,
+  "strict": "1/4",
+  "standard": "2/4",
+  "strict_ci": [
+   0.05,
+   0.7
+  ],
+  "standard_ci": [
+   0.15,
+   0.85
+  ]
+ },
+ "INFO": {
+  "n": 2,
+  "strict": "0/2",
+  "standard": "1/2",
+  "strict_ci": [
+   0,
+   0.66
+  ],
+  "standard_ci": [
+   0.09,
+   0.91
+  ]
+ },
+ "recall": {
+  "all": "0/9",
+  "all_ci": [
+   0,
+   0.3
+  ],
+  "mechanical": "0/4",
+  "mechanical_ci": [
+   0,
+   0.49
+  ],
+  "sample_rows": 80,
+  "rows_with_issue": 9,
+  "issue_rate_ci": [
+   0.06,
+   0.2
+  ],
+  "findings_touching_sample_rows": []
+ },
+ "loader": {
+  "rows": 756
+ }
+}

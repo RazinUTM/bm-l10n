@@ -1,0 +1,91 @@
+{
+  "summary": {
+    "rows": 756,
+    "msOnly": 0,
+    "files": [
+      "p1_start_notes.html",
+      "p2_slides.html",
+      "p3_explorer_ex_lab.html",
+      "app.js"
+    ],
+    "warnings": [
+      "p3_explorer_ex_lab.html: 1 \"en\" element(s) without a \"ms\" partner (line 138)",
+      "app.js: evaluation stopped early (Cannot read properties of undefined (reading 'querySelectorAll')); 5 pairs read",
+      "app.js: 97 helper call(s): 91 read, 3 with variables only, 3 not read (one side has no literal text, or not an (en, ms) pair; line 34, 35, 594)"
+    ],
+    "FIX": 2,
+    "WATCH": 2,
+    "INFO": 2,
+    "accepted": 0,
+    "byRule": {
+      "R05": 1,
+      "R09": 1,
+      "R04": 1,
+      "R12": 1,
+      "R11": 2
+    }
+  },
+  "findings": [
+    {
+      "rule": "R05",
+      "level": "FIX",
+      "file": "p1_start_notes.html",
+      "key": "n2/span@181#98",
+      "en": "Beam ABC is continuous over B, so it carries moment there (that is why it can cantilever out to C). The hinge at C lets the two members rotate relative to each other, so the moment there is zero.",
+      "ms": "Beam ABC selanjar melalui B, jadi ia membawa moment di situ (sebab itulah ia boleh menjulur sebagai cantilever hingga C). Hinge di C membenarkan dua anggota berputar relatif antara satu sama lain, jadi moment di situ sifar.",
+      "msg": "calque of \"one another\"",
+      "suggest": "\"sesama sendiri\" or restructure"
+    },
+    {
+      "rule": "R09",
+      "level": "FIX",
+      "file": "*",
+      "key": "Müller",
+      "en": "Müller",
+      "ms": "Prinsip Müller",
+      "msg": "label \"Müller\" is translated \"Prinsip Müller\" (p1_start_notes.html:n4/span@254#141) but 5 prose strings still say \"Müller\": p1_start_notes.html:n3/span@227#123, p1_start_notes.html:n8/ul@359#215, p1_start_notes.html:n8/p@363#216, p2_slides.html:deck/ol@26#8, p3_explorer_ex_lab.html:q9/span@221#175 — one form everywhere",
+      "suggest": "decide: \"Prinsip Müller\" in prose, or keep \"Müller\" as a term and add it to the termbase (tier 2)"
+    },
+    {
+      "rule": "R04",
+      "level": "WATCH",
+      "file": "p3_explorer_ex_lab.html",
+      "key": "v-lab/span@259#205",
+      "en": "kgf per division",
+      "ms": "kgf per division",
+      "msg": "MS is identical to EN; intentional?",
+      "suggest": ""
+    },
+    {
+      "rule": "R12",
+      "level": "WATCH",
+      "file": "p2_slides.html",
+      "key": "sprev/span@6#1",
+      "en": "Previous",
+      "ms": "Sebelum",
+      "msg": "bare \"sebelum\" is a preposition; as a label it needs -nya",
+      "suggest": "sebelumnya"
+    },
+    {
+      "rule": "R11",
+      "level": "INFO",
+      "file": "*",
+      "key": "Gauge",
+      "en": "Gauge",
+      "ms": "",
+      "msg": "\"Gauge\" kept in English in 3 strings, not in 2 — decide once and add it to the termbase (kept: p2_slides.html:deck/span@152#90, p3_explorer_ex_lab.html:q7/span@191#144, p3_explorer_ex_lab.html:q7/span@198#152; not: p1_start_notes.html:n7/span@341#200, p3_explorer_ex_lab.html:v-glossary/span@341#265)",
+      "suggest": ""
+    },
+    {
+      "rule": "R11",
+      "level": "INFO",
+      "file": "*",
+      "key": "Worked",
+      "en": "Worked",
+      "ms": "",
+      "msg": "\"Worked\" kept in English in 7 strings, not in 18 — decide once and add it to the termbase (kept: p1_start_notes.html:n5/span@289#163, p1_start_notes.html:n5/span@297#168, p1_start_notes.html:n8/p@363#216; not: p3_explorer_ex_lab.html:q1/span@113#62, p3_explorer_ex_lab.html:q1/span@115#64, p3_explorer_ex_lab.html:q2/span@126#74)",
+      "suggest": ""
+    }
+  ],
+  "accepted": []
+}
