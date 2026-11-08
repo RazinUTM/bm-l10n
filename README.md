@@ -23,7 +23,7 @@ It does **not** translate, and it does **not** contain or fetch dictionary conte
        runs-on: ubuntu-latest
        steps:
          - uses: actions/checkout@v4
-         - uses: RazinUTM/bm-l10n@<commit-sha>   # v0.1.2
+         - uses: RazinUTM/bm-l10n@<commit-sha>   # v0.1.3: 142efdc25c441ca4c11102c94d33973847d06bbe
            with:
              files: src/i18n.js content/texts.js src/game.js
              termbase: content/termbase-bm.csv
@@ -35,6 +35,8 @@ It does **not** translate, and it does **not** contain or fetch dictionary conte
 4. To check the current state at any time: *Actions → BM lint → Run workflow*.
 
 Pin `uses:` to a commit SHA (or to a release tag once one exists) so a later change to bm-l10n never changes your check without a pull request of your own.
+
+For a course page that keeps both languages in HTML (`<span class="en">…</span><span class="ms">…</span>`) and bilingual helpers in its script, list the pages and the script under `files:` and name the helpers, e.g. `call: L2,tx:1` and `pair-arrays: 'true'` (Lab S2's settings; see `examples/lab-s2/`).
 
 ## Install and run from a terminal
 

@@ -66,3 +66,33 @@ Decided by: AI, from the author's answers; author to confirm with the IMPAK pull
 Decision: when the author keeps a form that PRPM does not support (IMPAK: *bergraduat*), the termbase keeps `status=flagged` with the evidence, and the decision goes into the accepted-findings file with its reason. No new status value.
 Rationale: the termbase stays a truthful record of what DBP supports; the accepted list is the record of what the project decided; the report shows both.
 Decided by: Ahmad Razin (choice A, 8 Nov 2026), mechanism by AI.
+
+## 2026-11-08 Out-of-sample test on Lab S2: protocol before results
+Decision: the second project is measured with the v0.1.2 rules frozen (hashes recorded), the protocol, loader coverage and a blind random-sample audit pushed before the findings were read, and rule fixes measured separately as run 2 (not out-of-sample).
+Alternatives: tune on Lab S2 and report the tuned numbers; audit the findings only (no recall).
+Rationale: the IMPAK figures were in-sample; only a frozen run says how the rules generalise, and only a blind sample says what they miss.
+Decided by: author ("boleh, kita mulakan skrg", after agreeing the rules stay unchanged before the first run); protocol by AI.
+
+## 2026-11-08 HTML loader keeps markup; built strings are template literals
+Decision: an HTML `en`/`ms` element pair is read with its inner markup as stored; a JS string built by concatenation is read as the equivalent template literal (`"Score " + c` → `Score ${e1}`).
+Alternatives: strip tags to text; `{eN}` placeholders.
+Rationale: the JSON and JS loaders already keep `<b>` inside strings, so R01 can check markup parity in HTML too; a concatenation is a template literal written another way, and the rules already treat `${…}` as expressions whose names may differ by side (`{eN}` turned localised expressions such as `item.en` / `item.ms` into false placeholder errors in the IMPAK regression check).
+Decided by: AI, before the Lab S2 run (protocol amendment recorded).
+
+## 2026-11-08 R05 drops "antara satu sama lain"
+Decision: removed from R05 (FIX). It had been listed as a calque of "one another" since v0.1.0.
+Evidence: DBP Khidmat Nasihat, 21.02.2011 ("Yang tepat ialah antara satu sama lain atau antara satu dengan yang lain") and 05.11.2011; Kamus Dewan Edisi Keempat uses the phrase in its own definitions. Found as a FIX false positive in the Lab S2 out-of-sample run.
+Rationale: an entry that DBP contradicts cannot block a build. Lesson: FIX-level generic entries need recorded PRPM evidence (open task).
+Decided by: AI, on DBP evidence; for the author to confirm in the Lab S2 review.
+
+## 2026-11-08 R09 does not split at an unspaced en dash; R11 ignores case for "kept"
+Decision: R09 splits a label at a spaced dash, an em dash, a comma, a middle dot, a colon or an opening bracket, not at an unspaced en dash ("Müller–Breslau", "1–11"); R11 counts an English word as kept whatever its case.
+Rationale: both were false positives in the Lab S2 run (a proper name read as a control label; *gauge* moved mid-sentence by Malay word order). IMPAK findings unchanged by both.
+Decided by: AI; for the author to confirm.
+
+## 2026-11-08 Pattern: "di mana" / "yang mana" as a relative word (WATCH)
+Decision: `patterns.csv` flags *di mana*, *yang mana*, *dalam mana*, *dengan mana* used as relative words; questions, *di mana-mana* and the concessive *walau di mana pun* are excluded.
+Evidence: DBP Khidmat Nasihat 12.08.2010, 27.08.2012, 14.07.2017 (these are translations of *where* / *which*; in Malay they belong in questions; use *yang* or *tempat*).
+Rationale: the one mechanical issue type in the Lab S2 blind sample with clear DBP backing; 12 relative uses in Lab S2. Added after the sample, so its Lab S2 numbers are in-sample.
+Decided by: AI; for the author to confirm.
+
