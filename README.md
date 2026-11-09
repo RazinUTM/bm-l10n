@@ -36,6 +36,8 @@ It does **not** translate, and it does **not** contain or fetch dictionary conte
 
 Pin `uses:` to a commit SHA (or to a release tag once one exists) so a later change to bm-l10n never changes your check without a pull request of your own.
 
+Latest version: **v0.1.4** = `db0eb91ac24e1cb1b2edd0a3d741e24528927ebe` (v0.1.3 = `142efdc25c441ca4c11102c94d33973847d06bbe`, v0.1.2 = `f039eb512752a3e308af1e308f66c38f590a4c06`).
+
 For a course page that keeps both languages in HTML (`<span class="en">…</span><span class="ms">…</span>`) and bilingual helpers in its script, list the pages and the script under `files:` and name the helpers, e.g. `call: L2,tx:1` and `pair-arrays: 'true'` (Lab S2's settings; see `examples/lab-s2/`).
 
 ## Install and run from a terminal
