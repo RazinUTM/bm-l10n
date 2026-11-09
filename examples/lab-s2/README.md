@@ -31,8 +31,9 @@ none), R03 off. Report: [run1.md](run1.md); labels with reasons: [run1-labels.js
 | 5 | R11 | INFO | *Gauge* kept in 3, not in 2 | FP | Kept in all 5; in 2 the Malay word order puts it mid-sentence as *gauge*, and the match was case-sensitive. |
 | 6 | R11 | INFO | *Worked* kept in 7, not in 18 | TP-decision | Two terms share the word: *Worked example* kept, *Worked solution* = *Penyelesaian*. Debatable. |
 
-Precision (Claude's labels; the author's review is pending, and his answer wins where it differs).
-The intervals are 95 % Wilson intervals; with four findings they are wide.
+Precision (Claude's labels, confirmed by the author for all six findings on 9 Nov 2026; see
+[author-review.json](author-review.json)). The intervals are 95 % Wilson intervals; with four findings they
+are wide.
 
 | | Findings | Strict (text should change) | Standard (change or decision) |
 |---|---|---|---|
@@ -73,7 +74,7 @@ was an entry written from memory in v0.1.0.
 It does not show a stable precision figure: four FIX/WATCH findings cannot. It does not test R10
 and R13, which need a termbase; with one, several of the sample's "decision" issues (*page*, *full
 screen*, *browser*, *division*) become checks. The labels are Claude's until the author reviews
-them. And it is one second project, by the same author.
+them; he agreed with all six on 9 November. And it is one second project, by the same author.
 
 ## v0.1.3 and run 2 (not out-of-sample)
 
@@ -112,7 +113,7 @@ check does not change until he moves the pin.
    `title` attributes carry English only in the HTML (the language switch says *Language /
    Bahasa*; `app.js` updates two labels at run time) and sit outside any pair.
 
-## Findings for the author (decisions, not yet applied)
+## Findings for the author, and his answers (9 November)
 
 | # | What | Where | Suggestion |
 |---|---|---|---|
@@ -123,6 +124,8 @@ check does not change until he moves the pin.
 | 5 | kept terms to record | *division*, *Worked example*, *gauge*, … | a Lab S2 termbase |
 | 6 | phrasing from the sample | 5 strings | *meneka*; *berlaku apabila*; *setiap satu daripada 17 halt*; *Bandingkan berdasarkan*; *didarab dengan … dibahagi dengan* |
 | 7 | English-only accessibility labels | 112 `aria-label` (72 lines), 3 `title` | decide whether they follow the language switch |
+
+The author answered every card. Applied in [My_Lectures pull request #6](https://github.com/RazinUTM/My_Lectures/pull/6): rows 1 and 2 as proposed; *page*, *full screen* and *browser* translated (*halaman*, *skrin penuh*, *pelayar*); four of the five phrasing changes (*setiap 17 halt* kept); *section* kept in both senses; a Lab S2 termbase drafted from the page's own usage (71 rows) and a BM lint workflow, green at FIX 0 · WATCH 0 · INFO 6 (the INFO lines are six tier-1 words still to check on PRPM). Row 7 is agreed as separate work. The v0.1.3 rule changes are confirmed, and v0.1.4 will require PRPM evidence for every FIX-level generic entry.
 
 ## Files
 

@@ -16,7 +16,7 @@
    "cause": "pattern",
    "reason": "The R05 entry is wrong: DBP Khidmat Nasihat says \"antara satu sama lain\" is correct (21.02.2011, 05.11.2011) and Kamus Dewan Edisi Keempat uses it in its own definitions; the suggested \"sesama sendiri\" would not fit two structural members.",
    "evidence": "https://prpm.dbp.gov.my/Cari1?keyword=tidak+sama+dengan+yang+lain&d=175768 ; https://prpm.dbp.gov.my/Cari1?d=175768&keyword=homonim",
-   "author": null
+   "author": "agree"
   },
   {
    "rule": "R09",
@@ -30,7 +30,7 @@
    "label": "FP",
    "cause": "other",
    "reason": "Label split at the unspaced en dash inside the name \"Müller–Breslau\", so \"Müller\" was taken as a control label; the five prose strings correctly say Müller–Breslau.",
-   "author": null
+   "author": "agree"
   },
   {
    "rule": "R04",
@@ -44,7 +44,7 @@
    "label": "TP-decision",
    "cause": "",
    "reason": "\"kgf per division\" is identical by the author's rule (kgf is a unit, division a kept gauge term); the decision belongs in a termbase row (division, tier 2), after which R04 is silent.",
-   "author": null
+   "author": "agree"
   },
   {
    "rule": "R12",
@@ -58,7 +58,7 @@
    "label": "TP-change",
    "cause": "",
    "reason": "Slide button Previous rendered \"Sebelum\" (a preposition) beside Next = \"Seterusnya\"; the label needs \"Sebelumnya\", the form the author chose for IMPAK (previous -> sebelumnya, checked on PRPM).",
-   "author": null
+   "author": "agree"
   },
   {
    "rule": "R11",
@@ -72,7 +72,7 @@
    "label": "FP",
    "cause": "other",
    "reason": "\"Gauge\" is kept in all five strings; in two the Malay word order moves it mid-sentence and it is written \"gauge\" (Resolusi gauge, Bacaan gauge), which the case-sensitive match counts as not kept.",
-   "author": null
+   "author": "agree"
   },
   {
    "rule": "R11",
@@ -86,7 +86,8 @@
    "label": "TP-decision",
    "cause": "",
    "reason": "Two different terms share the word: \"Worked example\" is kept as a heading term (7), \"Worked solution\" is translated \"Penyelesaian\" (18). The observation is right and declaring \"Worked example\" as a kept term is worth recording, but the \"decide once\" framing does not fit; debatable, for the author.",
-   "author": null
+   "author": "agree"
   }
- ]
+ ],
+ "author_review": "Lab S2 BM review page, 9 Nov 2026: the author agreed with all 6 labels (cards A1-A6)."
 }

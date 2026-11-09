@@ -83,16 +83,22 @@ Decided by: AI, before the Lab S2 run (protocol amendment recorded).
 Decision: removed from R05 (FIX). It had been listed as a calque of "one another" since v0.1.0.
 Evidence: DBP Khidmat Nasihat, 21.02.2011 ("Yang tepat ialah antara satu sama lain atau antara satu dengan yang lain") and 05.11.2011; Kamus Dewan Edisi Keempat uses the phrase in its own definitions. Found as a FIX false positive in the Lab S2 out-of-sample run.
 Rationale: an entry that DBP contradicts cannot block a build. Lesson: FIX-level generic entries need recorded PRPM evidence (open task).
-Decided by: AI, on DBP evidence; for the author to confirm in the Lab S2 review.
+Decided by: AI, on DBP evidence; confirmed by the author (Lab S2 review D1, 9 Nov 2026).
 
 ## 2026-11-08 R09 does not split at an unspaced en dash; R11 ignores case for "kept"
 Decision: R09 splits a label at a spaced dash, an em dash, a comma, a middle dot, a colon or an opening bracket, not at an unspaced en dash ("Müller–Breslau", "1–11"); R11 counts an English word as kept whatever its case.
 Rationale: both were false positives in the Lab S2 run (a proper name read as a control label; *gauge* moved mid-sentence by Malay word order). IMPAK findings unchanged by both.
-Decided by: AI; for the author to confirm.
+Decided by: AI; confirmed by the author (Lab S2 review D1, 9 Nov 2026).
 
 ## 2026-11-08 Pattern: "di mana" / "yang mana" as a relative word (WATCH)
 Decision: `patterns.csv` flags *di mana*, *yang mana*, *dalam mana*, *dengan mana* used as relative words; questions, *di mana-mana* and the concessive *walau di mana pun* are excluded.
 Evidence: DBP Khidmat Nasihat 12.08.2010, 27.08.2012, 14.07.2017 (these are translations of *where* / *which*; in Malay they belong in questions; use *yang* or *tempat*).
 Rationale: the one mechanical issue type in the Lab S2 blind sample with clear DBP backing; 12 relative uses in Lab S2. Added after the sample, so its Lab S2 numbers are in-sample.
-Decided by: AI; for the author to confirm.
+Decided by: AI; confirmed by the author (Lab S2 review D1, 9 Nov 2026), who also had all 12 strings changed.
+
+## 2026-11-09 FIX-level generic entries need PRPM evidence
+Decision: every R05 entry and every FIX-level pattern carries the URL of the PRPM page that supports it; an entry without one is reported as WATCH, not FIX.
+Alternatives: keep FIX on the maintainer's judgement; remove unsupported entries.
+Rationale: the only generic FIX entry tested out of sample that failed (R05, *antara satu sama lain*) had been written from memory, and a FIX blocks the author's pull requests. WATCH keeps the hint visible without blocking.
+Decided by: Ahmad Razin (Lab S2 BM review, card D2, 9 Nov 2026), for v0.1.4.
 

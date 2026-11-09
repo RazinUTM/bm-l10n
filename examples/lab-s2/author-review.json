@@ -1,0 +1,25 @@
+{
+ "reviewed_on": "2026-11-09",
+ "page": "Lab S2 BM review (claude.ai artifact, private to the author)",
+ "answers": {
+  "A1-A6": "agree with all six run-1 labels",
+  "B1": "change Previous to Sebelumnya",
+  "B2": "change all 12 relative di mana as proposed",
+  "B3": "meneka",
+  "B4": "berlaku apabila … berada",
+  "B5": "keep 'setiap 17 halt'",
+  "B6": "Bandingkan berdasarkan",
+  "B7": "didarab dengan … dibahagi dengan",
+  "C1": "translate page, full screen, browser: halaman, skrin penuh, pelayar",
+  "C2": "keep section in both senses",
+  "C3": "draft a Lab S2 termbase from the Glossary tab",
+  "C4": "accessibility labels should follow the language switch (separate work)",
+  "D1": "confirm the four v0.1.3 rule changes",
+  "D2": "v0.1.4: PRPM evidence for every FIX-level generic entry; without evidence, WATCH",
+  "D3": "IMPAK: keep dana in the fund-lapsed line (accepted list)"
+ },
+ "applied_in": [
+  "RazinUTM/My_Lectures pull request #6 (branch s2-bm-review, eb4e640): text changes, termbase, BM lint workflow; check green",
+  "RazinUTM/impak-techpark pull request #1 (1454143): pin v0.1.3, accepted entry; FIX 0 · WATCH 0 · INFO 2 · accepted 7"
+ ]
+}
