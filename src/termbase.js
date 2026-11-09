@@ -83,7 +83,7 @@ export async function loadPatterns(path) {
   return rows.map(r => {
     const o = {};
     header.forEach((h, i) => { o[h] = (r[i] ?? '').trim(); });
-    return { re: new RegExp(o.pattern, (o.flags === '-' ? '' : (o.flags || 'i')) + 'u'), pattern: o.pattern, suggest: o.suggest || '', note: o.note || '', level: (o.level || 'WATCH').toUpperCase() };
+    return { re: new RegExp(o.pattern, (o.flags === '-' ? '' : (o.flags || 'i')) + 'u'), pattern: o.pattern, suggest: o.suggest || '', note: o.note || '', level: (o.level || 'WATCH').toUpperCase(), evidence: o.evidence || '' };
   }).filter(p => p.pattern);
 }
 

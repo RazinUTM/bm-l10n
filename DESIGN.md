@@ -69,7 +69,7 @@ A term inside a longer termbase term is not the bare term: *linked* in *universi
 
 `bm-lint-accepted.csv`: `rule, file, match, note`. Findings the author has decided to keep (an exception to a termbase rule, a reading he prefers) leave the counts and are listed under "Accepted" in the report. `match` is a substring of the English or Malay text, so an entry survives code moving to other lines; an entry that no longer matches anything is reported (R00), so the list cannot rot silently. *(v0.1.2)*
 
-`patterns.csv`: `pattern, level, suggest, note, flags`. `pattern` is a JS regex body; flags default to `i`; `-` means case-sensitive. The shipped list is generic Malaysian Malay; a project adds its own file or rows.
+`patterns.csv`: `pattern, level, suggest, note, flags, evidence`. `pattern` is a JS regex body; flags default to `i`; `-` means case-sensitive. Since v0.1.4 a FIX row blocks only when `evidence` holds a PRPM URL; without one it is reported as WATCH (the same holds for R05 entries in code). The shipped list is generic Malaysian Malay; a project adds its own file or rows.
 
 ## 7. Report
 
@@ -94,4 +94,4 @@ Markdown (default) or JSON. Markdown lists FIX, WATCH and INFO in that order, on
 4. **`bml draft`:** not built; drafts stay in Claude sessions with the skill.
 5. **Termbase matching:** keep the capitalisation convention; no `match` column.
 
-Open: whether the termbase should gain a status between `checked` and `flagged` for forms DBP accepts but the project avoids (e.g. *muflis*). Agreed on 9 Nov (Lab S2 review D2) for v0.1.4: a PRPM evidence URL for every FIX-level generic entry (R05 rows, FIX patterns), with entries that have none reported as WATCH. Lab S2 now has a termbase (drafted from the page's own usage, My_Lectures PR #6), so R10 and R13 run there; they are not out-of-sample, as the termbase was built from the same text.
+Open: whether the termbase should gain a status between `checked` and `flagged` for forms DBP accepts but the project avoids (e.g. *muflis*). Done in v0.1.4 (agreed 9 Nov, Lab S2 review D2): a FIX-level generic entry blocks only with a PRPM evidence URL. R05: four entries carry Khidmat Nasihat pages (*adalah merupakan*; *di* and *ke* apart from place words; *di-* joined to verbs); counted reduplication has none yet and is WATCH. Patterns: the six Indonesian forms and *membersihkan hutan* have no evidence yet and are WATCH; IMPAK and Lab S2 results are unchanged by this. Lab S2 now has a termbase (drafted from the page's own usage, My_Lectures PR #6), so R10 and R13 run there; they are not out-of-sample, as the termbase was built from the same text.

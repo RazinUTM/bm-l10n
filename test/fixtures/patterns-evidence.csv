@@ -1,0 +1,2 @@
+pattern,level,suggest,note,flags,evidence
+\bmembersihkan hutan\b,FIX,membuka hutan,test row with evidence,,https://prpm.dbp.gov.my/Cari1?keyword=hutan

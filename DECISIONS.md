@@ -101,4 +101,5 @@ Decision: every R05 entry and every FIX-level pattern carries the URL of the PRP
 Alternatives: keep FIX on the maintainer's judgement; remove unsupported entries.
 Rationale: the only generic FIX entry tested out of sample that failed (R05, *antara satu sama lain*) had been written from memory, and a FIX blocks the author's pull requests. WATCH keeps the hint visible without blocking.
 Decided by: Ahmad Razin (Lab S2 BM review, card D2, 9 Nov 2026), for v0.1.4.
+Done in v0.1.4 (9 Nov): R05 *adalah merupakan* (Khidmat Nasihat 26.05.2009), *di* / *ke* apart from place words and *di-* joined to verbs (12.07.2009) keep FIX; counted reduplication, the six Indonesian-form patterns and *membersihkan hutan* are WATCH until a PRPM page is recorded in their `evidence`.
 

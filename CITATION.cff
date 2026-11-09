@@ -5,7 +5,7 @@ authors:
   - family-names: Zainal Abidin
     given-names: Ahmad Razin
     affiliation: Universiti Teknologi Malaysia
-version: 0.1.3
-date-released: 2026-11-08
+version: 0.1.4
+date-released: 2026-11-09
 license: MIT
 repository-code: https://github.com/RazinUTM/bm-l10n

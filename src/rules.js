@@ -89,14 +89,22 @@ export function r04_untranslated(rows, ctx) {
 
 /* ---------- R05 grammar and spelling that are always wrong in standard Malay ---------- */
 const ALWAYS = [
-  { re: /\badalah\s+merupakan\b/i, msg: '"adalah merupakan" is a doubled copula', suggest: 'use "ialah", "merupakan" or neither' },
-  { re: /\b(di)(sini|situ|sana|mana|atas|bawah|dalam|luar|antara|samping|sebelah|hadapan|belakang)\b/i, msg: 'preposition "di" is written apart from a place word', suggest: '"di $2"' },
-  { re: /\b(ke)(sini|situ|sana|atas|bawah|hadapan|belakang)\b/i, msg: 'preposition "ke" is written apart from a place word', suggest: '"ke $2"' },
-  { re: /\bdi\s+(simpan|padam|hantar|muat|pilih|buka|tutup|tambah|buang|ubah|kemas|cetak|salin|papar|semak|sahkan|tetapkan|jalankan|mulakan)\b/i, msg: 'passive prefix "di-" must be attached to the verb', suggest: '"di$1"' },
-  { re: /(\b\d+|\{[^{}]+\}|\b(?:beberapa|banyak|semua|setiap|para|ramai|segala|pelbagai|kebanyakan))\s+(\p{L}+)-\2\b/iu, msg: 'reduplicated plural after a number or quantifier', suggest: '"$1 $2"' },
+  { re: /\badalah\s+merupakan\b/i, msg: '"adalah merupakan" is a doubled copula', suggest: 'use "ialah", "merupakan" or neither',
+    evidence: 'https://prpm.dbp.gov.my/Cari1?keyword=ialah+adalah+merupakan&d=175768' },   // Khidmat Nasihat 26.05.2009
+  { re: /\b(di)(sini|situ|sana|mana|atas|bawah|dalam|luar|antara|samping|sebelah|hadapan|belakang)\b/i, msg: 'preposition "di" is written apart from a place word', suggest: '"di $2"',
+    evidence: 'https://prpm.dbp.gov.my/Cari1?keyword=jarak&d=175768' },   // Khidmat Nasihat 12.07.2009 (di and ke as prepositions apart, di- as a prefix joined)
+  { re: /\b(ke)(sini|situ|sana|atas|bawah|hadapan|belakang)\b/i, msg: 'preposition "ke" is written apart from a place word', suggest: '"ke $2"',
+    evidence: 'https://prpm.dbp.gov.my/Cari1?keyword=jarak&d=175768' },
+  { re: /\bdi\s+(simpan|padam|hantar|muat|pilih|buka|tutup|tambah|buang|ubah|kemas|cetak|salin|papar|semak|sahkan|tetapkan|jalankan|mulakan)\b/i, msg: 'passive prefix "di-" must be attached to the verb', suggest: '"di$1"',
+    evidence: 'https://prpm.dbp.gov.my/Cari1?keyword=jarak&d=175768' },
+  { re: /(\b\d+|\{[^{}]+\}|\b(?:beberapa|banyak|semua|setiap|para|ramai|segala|pelbagai|kebanyakan))\s+(\p{L}+)-\2\b/iu, msg: 'reduplicated plural after a number or quantifier', suggest: '"$1 $2"',
+    evidence: '' },   // Tatabahasa Dewan rule; no PRPM page recorded yet, so reported as WATCH
   // Not here: "antara satu sama lain". v0.1.0-0.1.2 called it a calque; DBP Khidmat Nasihat says it is
   // correct (21.02.2011, 05.11.2011) and Kamus Dewan uses it. Found by the Lab S2 out-of-sample test.
 ];
+// An entry blocks (FIX) only with the URL of a PRPM page that supports it; without one it is WATCH
+// (decided 9 Nov 2026, after the Lab S2 out-of-sample test found an R05 entry that DBP contradicts).
+export const R05_ENTRIES = ALWAYS;
 export function r05_grammar(rows) {
   const out = [];
   for (const r of rows) {
@@ -106,7 +114,7 @@ export function r05_grammar(rows) {
       const hit = ms.match(g.re);                       // detect with placeholders blanked out
       if (!hit) continue;
       const m = r.ms.match(g.re) || hit;                // but quote the author's own text in the suggestion
-      out.push(F('R05', 'FIX', r, g.msg, g.suggest.replace(/\$(\d)/g, (_, i) => m[i] ?? '')));
+      out.push(F('R05', g.evidence ? 'FIX' : 'WATCH', r, g.msg, g.suggest.replace(/\$(\d)/g, (_, i) => m[i] ?? '')));
     }
   }
   return out;
@@ -278,7 +286,8 @@ export function r12_patterns(rows, ctx) {
     if (!r.ms) continue;
     const ms = maskPh(r.ms);
     for (const p of ctx.patterns) {
-      if (p.re.test(ms)) out.push(F('R12', p.level === 'FIX' ? 'FIX' : 'WATCH', r, p.note || `pattern /${p.pattern}/`, p.suggest));
+      // a FIX pattern blocks only with recorded PRPM evidence (evidence column); otherwise WATCH
+      if (p.re.test(ms)) out.push(F('R12', p.level === 'FIX' && p.evidence ? 'FIX' : 'WATCH', r, p.note || `pattern /${p.pattern}/`, p.suggest));
     }
   }
   return out;
@@ -308,13 +317,13 @@ export const RULE_DOC = {
   R02: 'every EN key has an MS string',
   R03: 'length growth beyond what Malay normally needs (opt-in: --with R03)',
   R04: 'MS identical to EN on a multi-word string',
-  R05: 'spelling and grammar that are always wrong (adalah merupakan, di sini, di- prefix, counted reduplication)',
+  R05: 'spelling and grammar that are always wrong (adalah merupakan, di sini, di- prefix, counted reduplication); FIX only with recorded PRPM evidence',
   R06: 'pronouns kamu/awak/engkau/kau/aku in app strings',
   R07: '"Sila" on a button or menu label',
   R08: 'ICU plural branches Malay does not need',
   R09: 'control names in prose must use the translated label',
   R10: 'termbase: rejected forms, expected renderings, tier-2 terms kept in English',
   R11: 'the same English word kept in some strings and translated in others',
-  R12: 'calque and idiom patterns from patterns.csv',
+  R12: 'calque and idiom patterns from patterns.csv; a FIX pattern blocks only with recorded PRPM evidence',
   R13: 'termbase entries not yet checked against PRPM (INFO), or checked and not supported by PRPM (status flagged: WATCH)',
 };

@@ -68,10 +68,19 @@ test('R10 termbase: rejected form dijeda, tier-2 term translated as matriks keka
   assert.ok(find(r, 'R10', 'stiff').some(f => f.level === 'FIX' && /matriks kekakuan/.test(f.msg)));
 });
 
-test('R12 patterns: membersihkan hutan is FIX, Level sebelum is WATCH', async () => {
+test('R12 patterns: a FIX pattern blocks only with PRPM evidence; Level sebelum is WATCH', async () => {
   const r = await run();
-  assert.ok(find(r, 'R12', 'esg').some(f => f.level === 'FIX'));
+  assert.ok(find(r, 'R12', 'esg').some(f => f.level === 'WATCH'));       // shipped row has no evidence yet
   assert.ok(find(r, 'R12', 'lvl.prev').some(f => f.level === 'WATCH'));
+  const withEv = await run({ patterns: fx('patterns-evidence.csv') });
+  assert.ok(find(withEv, 'R12', 'esg').some(f => f.level === 'FIX'));
+});
+
+test('R05 entries block only with recorded PRPM evidence', async () => {
+  const { R05_ENTRIES, r05_grammar } = await import('../src/rules.js');
+  for (const g of R05_ENTRIES) assert.ok(g.evidence === '' || /^https:\/\/prpm\.dbp\.gov\.my\//.test(g.evidence), g.msg);
+  const rows = [{ file: 'x', key: 'a', en: 'x', ms: 'Fail ini adalah merupakan salinan.' }, { file: 'x', key: 'b', en: 'x', ms: 'Pilih 3 fail-fail itu.' }];
+  assert.deepEqual(r05_grammar(rows).map(f => `${f.key}:${f.level}`), ['a:FIX', 'b:WATCH']);
 });
 
 test('R04 identical string containing a tier-2 term is not flagged', async () => {

@@ -23,7 +23,7 @@ It does **not** translate, and it does **not** contain or fetch dictionary conte
        runs-on: ubuntu-latest
        steps:
          - uses: actions/checkout@v4
-         - uses: RazinUTM/bm-l10n@<commit-sha>   # v0.1.3: 142efdc25c441ca4c11102c94d33973847d06bbe
+         - uses: RazinUTM/bm-l10n@<commit-sha>   # see the latest version below
            with:
              files: src/i18n.js content/texts.js src/game.js
              termbase: content/termbase-bm.csv
@@ -83,14 +83,14 @@ JS files are evaluated in a `node:vm` sandbox with no access to the host; functi
 | R02 | FIX | missing MS string |
 | R03 | WATCH | strings that grew far beyond the 1.15–1.3× Malay normally needs (off unless `--with R03`) |
 | R04 | WATCH | multi-word MS identical to EN with no tier-2 term inside |
-| R05 | FIX | `adalah merupakan`, `disini` / `kesana`, `di simpan`, `3 fail-fail` (not *antara satu sama lain*, which DBP accepts) |
+| R05 | FIX / WATCH | `adalah merupakan`, `disini` / `kesana`, `di simpan` (FIX, each with a Khidmat Nasihat page recorded); `3 fail-fail` (WATCH until a PRPM page is recorded). Not *antara satu sama lain*, which DBP accepts |
 | R06 | FIX | `kamu / awak / engkau / kau / aku` in app strings (`--casual` to allow a persona voice) |
 | R07 | WATCH | `Sila` on a button or menu label |
 | R08 | WATCH | ICU plural branches Malay does not need |
 | R09 | FIX | prose that names a control by its English label while the label itself is translated (`tile Cash` vs label `Tunai`) |
 | R10 | FIX / WATCH | termbase: rejected forms, technical terms translated, chosen renderings not used |
 | R11 | INFO | the same English word kept in some strings and translated in others |
-| R12 | FIX / WATCH | calques and Indonesian forms from `patterns.csv` (`bisa`, `unduh`, "buys time", `(pilihan)`, `membersihkan hutan`, *di mana* / *yang mana* as a relative word, …) |
+| R12 | FIX / WATCH | calques and Indonesian forms from `patterns.csv` (`bisa`, `unduh`, "buys time", `(pilihan)`, `membersihkan hutan`, *di mana* / *yang mana* as a relative word, …); a FIX row blocks only with recorded PRPM evidence |
 | R13 | INFO / WATCH | termbase entries not yet checked against PRPM, with the URL to open; WATCH for a form the check found unsupported (`status=flagged`) |
 
 Strings that pass every rule are not listed. That means they contain no mechanical error; it says nothing about whether they read well — that judgement stays with a Malay-speaking reviewer or the authoring prompt.
@@ -115,7 +115,7 @@ A term inside a longer termbase term is not checked as the bare term there: with
 
 `bm-lint-accepted.csv` — `rule, file, match, note`: findings the author has decided to keep. They leave the counts and appear under *Accepted* at the end of the report; `match` is a piece of the English or Malay text, so the entry survives code moving; an entry that no longer matches anything is reported, so the list stays honest.
 
-`patterns.csv` — `pattern, level, suggest, note, flags`: regular expressions over MS strings with a level each. The shipped list is generic Malaysian Malay; add project rows or a second file.
+`patterns.csv` — `pattern, level, suggest, note, flags, evidence`: regular expressions over MS strings with a level each. A row marked FIX blocks only when `evidence` holds the URL of a PRPM page that supports it; without one it is reported as WATCH. The shipped list is generic Malaysian Malay; add project rows or a second file.
 
 A worked example lives in `examples/impak/`: the termbase taken from IMPAK – Technovation Park's own BM glossary and the lint report on its main branch (1,578 strings in 11 files, 8 Nov 2026).
 
